@@ -1,0 +1,8 @@
+{
+    "podSummary": "ExtoleClientAPI",
+    "podHomepage": "https://github.com/extole/",
+    "podAuthors": "Extole",
+    "projectName": "ExtoleClientAPI",
+    "ensureUniqueParams": true,
+    "podVersion": "1.0.0"
+}
