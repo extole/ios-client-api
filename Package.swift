@@ -5,13 +5,17 @@ import PackageDescription
 
 let package = Package(
     name: "ExtoleClientAPI",
+    platforms: [
+        .iOS(.v12),
+        .macOS(.v10_15)
+    ],
     products: [
         .library(
             name: "ExtoleClientAPI",
             targets: ["ExtoleClientAPI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.4.0"))
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "4.9.1"))
     ],
     targets: [
         .target(

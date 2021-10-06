@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license = 'Proprietary'
   s.homepage = 'https://github.com/extole/'
   s.summary = 'ExtoleClientAPI'
-  s.source_files = 'Sources/ExtoleClientAPI/**/*'
-  s.dependency 'Alamofire', '~> 5.4'
+  s.source_files = '**/Sources/**/*'
+  s.dependency 'Alamofire', '~> 4.9.1'
   s.swift_version = '5.0'
 end
