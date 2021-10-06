@@ -1,15 +1,13 @@
 Pod::Spec.new do |s|
   s.name = 'ExtoleClientAPI'
-  s.ios.deployment_target = '9.0'
-  s.osx.deployment_target = '10.11'
-  s.tvos.deployment_target = '9.0'
+  s.ios.deployment_target = '13.0'
   s.version = '0.0.1'
   s.source = { :git => 'https://github.com/extole/ios-client-api-stub.git', :tag => s.version }
-  s.requires_arc = true
   s.authors = 'Extole'
   s.license = 'Proprietary'
   s.homepage = 'https://github.com/extole/'
   s.summary = 'ExtoleClientAPI'
-  s.source_files = 'ExtoleClientAPI/Classes/**/*.swift'
-  s.dependency 'Alamofire', '~> 4.9.0'
+  s.source_files = 'Sources/ExtoleClientAPI/**/*'
+  s.dependency 'Alamofire', '~> 5.4'
+  s.swift_version = '5.0'
 end

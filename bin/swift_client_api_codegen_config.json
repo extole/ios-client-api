@@ -1,8 +1,9 @@
 {
     "podSummary": "ExtoleClientAPI",
     "podHomepage": "https://github.com/extole/",
+    "podSource" : "{ :git => 'https://github.com/extole/ios-client-api-stub.git', :tag => s.version }",
     "podAuthors": "Extole",
     "projectName": "ExtoleClientAPI",
     "ensureUniqueParams": true,
-    "podVersion": "1.0.0"
+    "podVersion": "0.0.1"
 }

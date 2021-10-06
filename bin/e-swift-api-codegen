@@ -28,21 +28,23 @@ java -DapiDocs=false -DmodelDocs=false -DapiTests=false -cp ${swagger_codegen_ex
     --type-mappings object=String \
     -c $project_root/bin/swift_client_api_codegen_config.json
 
+cd $project_root
+
 java_type_file=$(find . -type f -name "JavaType.swift")
-sed -i -- 's/struct/class/g' $java_type_file
+sed -i '' 's/struct/class/g' $java_type_file
 
-# https://extole.atlassian.net/browse/ENG-15224 will fix below replacements
-v2_persons_api_file=$(find . -type f -name "V2personsAPI.swift")
-sed -i -- 's/open class func isSamePerson(personId: String, personId: String? = nil/open class func isSamePerson(personId: String, secondPersonId: String? = nil/g' $v2_persons_api_file
-sed -i -- 's/open class func isSamePersonWithRequestBuilder(personId: String, personId: String? = nil)/open class func isSamePersonWithRequestBuilder(personId: String, secondPersonId: String? = nil)/g' $v2_persons_api_file
-sed -i -- 's/isSamePersonWithRequestBuilder(personId: personId, personId: personId)/isSamePersonWithRequestBuilder(personId: personId, secondPersonId: secondPersonId)/g' $v2_persons_api_file
-sed -i -- 's/\"person_id\": personId/\"person_id\": secondPersonId/g' $v2_persons_api_file
+# # https://extole.atlassian.net/browse/ENG-15224 will fix below replacements
+# v2_persons_api_file=$(find . -type f -name "V2personsAPI.swift")
+# sed -i -- 's/open class func isSamePerson(personId: String, personId: String? = nil/open class func isSamePerson(personId: String, secondPersonId: String? = nil/g' $v2_persons_api_file
+# sed -i -- 's/open class func isSamePersonWithRequestBuilder(personId: String, personId: String? = nil)/open class func isSamePersonWithRequestBuilder(personId: String, secondPersonId: String? = nil)/g' $v2_persons_api_file
+# sed -i -- 's/isSamePersonWithRequestBuilder(personId: personId, personId: personId)/isSamePersonWithRequestBuilder(personId: personId, secondPersonId: secondPersonId)/g' $v2_persons_api_file
+# sed -i -- 's/\"person_id\": personId/\"person_id\": secondPersonId/g' $v2_persons_api_file
 
-v4_runtime_persons_api_file=$(find . -type f -name "V4runtimePersonsAPI.swift")
-sed -i -- 's/open class func isSamePerson2(personId: String, personId: String? = nil/open class func isSamePerson2(personId: String, secondPersonId: String? = nil/g' $v4_runtime_persons_api_file
-sed -i -- 's/open class func isSamePerson2WithRequestBuilder(personId: String, personId: String? = nil)/open class func isSamePerson2WithRequestBuilder(personId: String, secondPersonId: String? = nil)/g' $v4_runtime_persons_api_file
-sed -i -- 's/isSamePerson2WithRequestBuilder(personId: personId, personId: personId)/isSamePerson2WithRequestBuilder(personId: personId, secondPersonId: secondPersonId)/g' $v4_runtime_persons_api_file
-sed -i -- 's/\"person_id\": personId/\"person_id\": secondPersonId/g' $v4_runtime_persons_api_file
+# v4_runtime_persons_api_file=$(find . -type f -name "V4runtimePersonsAPI.swift")
+# sed -i -- 's/open class func isSamePerson2(personId: String, personId: String? = nil/open class func isSamePerson2(personId: String, secondPersonId: String? = nil/g' $v4_runtime_persons_api_file
+# sed -i -- 's/open class func isSamePerson2WithRequestBuilder(personId: String, personId: String? = nil)/open class func isSamePerson2WithRequestBuilder(personId: String, secondPersonId: String? = nil)/g' $v4_runtime_persons_api_file
+# sed -i -- 's/isSamePerson2WithRequestBuilder(personId: personId, personId: personId)/isSamePerson2WithRequestBuilder(personId: personId, secondPersonId: secondPersonId)/g' $v4_runtime_persons_api_file
+# sed -i -- 's/\"person_id\": personId/\"person_id\": secondPersonId/g' $v4_runtime_persons_api_file
 
 # Consumer API generation
 
