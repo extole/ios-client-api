@@ -15,15 +15,15 @@ public struct CampaignFlowStepResponse: Codable {
     public var flowPath: BuildtimeEvaluatableCampaignBuildtimeContextString?
     public var sequence: BuildtimeEvaluatableCampaignBuildtimeContextBigDecimal?
     public var stepName: BuildtimeEvaluatableCampaignBuildtimeContextString?
-    public var iconType: String?
+    public var iconType: BuildtimeEvaluatableCampaignBuildtimeContextString?
     public var metrics: [CampaignFlowStepMetricResponse]?
     public var apps: [CampaignFlowStepAppResponse]?
-    public var tags: [String]?
+    public var tags: BuildtimeEvaluatableCampaignBuildtimeContextSetString?
     public var name: BuildtimeEvaluatableCampaignBuildtimeContextString?
     public var iconColor: BuildtimeEvaluatableCampaignBuildtimeContextString?
     public var componentReferences: [CampaignComponentReferenceResponse]?
 
-    public init(flowStepId: String? = nil, flowPath: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, sequence: BuildtimeEvaluatableCampaignBuildtimeContextBigDecimal? = nil, stepName: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, iconType: String? = nil, metrics: [CampaignFlowStepMetricResponse]? = nil, apps: [CampaignFlowStepAppResponse]? = nil, tags: [String]? = nil, name: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, iconColor: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil) {
+    public init(flowStepId: String? = nil, flowPath: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, sequence: BuildtimeEvaluatableCampaignBuildtimeContextBigDecimal? = nil, stepName: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, iconType: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, metrics: [CampaignFlowStepMetricResponse]? = nil, apps: [CampaignFlowStepAppResponse]? = nil, tags: BuildtimeEvaluatableCampaignBuildtimeContextSetString? = nil, name: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, iconColor: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil) {
         self.flowStepId = flowStepId
         self.flowPath = flowPath
         self.sequence = sequence

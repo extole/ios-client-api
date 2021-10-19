@@ -13,19 +13,19 @@ public struct CampaignControllerResponse: Codable {
 
     public var controllerId: String?
     public var name: BuildtimeEvaluatableCampaignBuildtimeContextString?
-    public var enabled: Bool?
+    public var enabled: BuildtimeEvaluatableCampaignBuildtimeContextBoolean?
     public var enabledOnStates: BuildtimeEvaluatableCampaignBuildtimeContextSetState?
     public var experienceTypes: BuildtimeEvaluatableCampaignBuildtimeContextSetCampaignExperienceType?
     public var selectors: BuildtimeEvaluatableCampaignBuildtimeContextListCampaignControllerSelectorType?
     public var triggers: [CampaignControllerTriggerResponse]?
     public var actions: [CampaignControllerActionResponse]?
-    public var aliases: [String]?
-    public var partnerIdName: String?
+    public var aliases: BuildtimeEvaluatableCampaignBuildtimeContextSetString?
+    public var partnerIdName: BuildtimeEvaluatableCampaignBuildtimeContextOptionalString?
     public var data: [StepDataResponse]?
     public var value: String?
     public var componentReferences: [CampaignComponentReferenceResponse]?
 
-    public init(controllerId: String? = nil, name: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, enabled: Bool? = nil, enabledOnStates: BuildtimeEvaluatableCampaignBuildtimeContextSetState? = nil, experienceTypes: BuildtimeEvaluatableCampaignBuildtimeContextSetCampaignExperienceType? = nil, selectors: BuildtimeEvaluatableCampaignBuildtimeContextListCampaignControllerSelectorType? = nil, triggers: [CampaignControllerTriggerResponse]? = nil, actions: [CampaignControllerActionResponse]? = nil, aliases: [String]? = nil, partnerIdName: String? = nil, data: [StepDataResponse]? = nil, value: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil) {
+    public init(controllerId: String? = nil, name: BuildtimeEvaluatableCampaignBuildtimeContextString? = nil, enabled: BuildtimeEvaluatableCampaignBuildtimeContextBoolean? = nil, enabledOnStates: BuildtimeEvaluatableCampaignBuildtimeContextSetState? = nil, experienceTypes: BuildtimeEvaluatableCampaignBuildtimeContextSetCampaignExperienceType? = nil, selectors: BuildtimeEvaluatableCampaignBuildtimeContextListCampaignControllerSelectorType? = nil, triggers: [CampaignControllerTriggerResponse]? = nil, actions: [CampaignControllerActionResponse]? = nil, aliases: BuildtimeEvaluatableCampaignBuildtimeContextSetString? = nil, partnerIdName: BuildtimeEvaluatableCampaignBuildtimeContextOptionalString? = nil, data: [StepDataResponse]? = nil, value: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil) {
         self.controllerId = controllerId
         self.name = name
         self.enabled = enabled

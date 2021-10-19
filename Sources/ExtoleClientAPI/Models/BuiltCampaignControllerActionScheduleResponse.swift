@@ -41,11 +41,11 @@ public struct BuiltCampaignControllerActionScheduleResponse: Codable {
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var scheduleName: String?
     public var delays: [Int64]?
-    public var dates: [String]?
+    public var dates: [Date]?
     public var force: Bool?
     public var data: [String:String]?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, scheduleName: String? = nil, delays: [Int64]? = nil, dates: [String]? = nil, force: Bool? = nil, data: [String:String]? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, scheduleName: String? = nil, delays: [Int64]? = nil, dates: [Date]? = nil, force: Bool? = nil, data: [String:String]? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality
