@@ -43,8 +43,9 @@ public struct CampaignControllerActionFulfillRewardResponse: Codable {
     public var message: String?
     public var success: String?
     public var partnerRewardId: String?
+    public var eventTime: RuntimeEvaluatableRewardActionContextOptionalInstant?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardId: String? = nil, message: String? = nil, success: String? = nil, partnerRewardId: String? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardId: String? = nil, message: String? = nil, success: String? = nil, partnerRewardId: String? = nil, eventTime: RuntimeEvaluatableRewardActionContextOptionalInstant? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality
@@ -53,6 +54,7 @@ public struct CampaignControllerActionFulfillRewardResponse: Codable {
         self.message = message
         self.success = success
         self.partnerRewardId = partnerRewardId
+        self.eventTime = eventTime
     }
 
     public enum CodingKeys: String, CodingKey { 
@@ -64,6 +66,7 @@ public struct CampaignControllerActionFulfillRewardResponse: Codable {
         case message
         case success
         case partnerRewardId = "partner_reward_id"
+        case eventTime = "event_time"
     }
 
 }

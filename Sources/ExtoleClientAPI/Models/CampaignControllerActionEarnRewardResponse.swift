@@ -48,8 +48,9 @@ public struct CampaignControllerActionEarnRewardResponse: Codable {
     public var programDomainId: String?
     public var sandbox: String?
     public var valueOfEventBeingRewarded: String?
+    public var eventTime: RuntimeEvaluatableRewardActionContextOptionalInstant?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardName: String? = nil, rewardSupplierId: BuildtimeEvaluatableControllerBuildtimeContextOptionalIdObject? = nil, pollingId: String? = nil, slots: [String]? = nil, tags: [String]? = nil, data: [String:String]? = nil, programDomainId: String? = nil, sandbox: String? = nil, valueOfEventBeingRewarded: String? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardName: String? = nil, rewardSupplierId: BuildtimeEvaluatableControllerBuildtimeContextOptionalIdObject? = nil, pollingId: String? = nil, slots: [String]? = nil, tags: [String]? = nil, data: [String:String]? = nil, programDomainId: String? = nil, sandbox: String? = nil, valueOfEventBeingRewarded: String? = nil, eventTime: RuntimeEvaluatableRewardActionContextOptionalInstant? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality
@@ -63,6 +64,7 @@ public struct CampaignControllerActionEarnRewardResponse: Codable {
         self.programDomainId = programDomainId
         self.sandbox = sandbox
         self.valueOfEventBeingRewarded = valueOfEventBeingRewarded
+        self.eventTime = eventTime
     }
 
     public enum CodingKeys: String, CodingKey { 
@@ -79,6 +81,7 @@ public struct CampaignControllerActionEarnRewardResponse: Codable {
         case programDomainId = "program_domain_id"
         case sandbox
         case valueOfEventBeingRewarded = "value_of_event_being_rewarded"
+        case eventTime = "event_time"
     }
 
 }
