@@ -16,8 +16,8 @@ open class DefaultAPI {
      - parameter webhookId: (path) The id of the webhook to be deleted. 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func archiveWebhook1(webhookId: String, completion: @escaping ((_ data: WebhookResponse?,_ error: Error?) -> Void)) {
-        archiveWebhook1WithRequestBuilder(webhookId: webhookId).execute { (response, error) -> Void in
+    open class func archiveWebhook(webhookId: String, completion: @escaping ((_ data: WebhookResponse?,_ error: Error?) -> Void)) {
+        archiveWebhookWithRequestBuilder(webhookId: webhookId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
@@ -55,7 +55,7 @@ open class DefaultAPI {
 
      - returns: RequestBuilder<WebhookResponse> 
      */
-    open class func archiveWebhook1WithRequestBuilder(webhookId: String) -> RequestBuilder<WebhookResponse> {
+    open class func archiveWebhookWithRequestBuilder(webhookId: String) -> RequestBuilder<WebhookResponse> {
         var path = "/v6/webhooks/{webhook_id}"
         let webhookIdPreEscape = "\(webhookId)"
         let webhookIdPostEscape = webhookIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -75,8 +75,8 @@ open class DefaultAPI {
      - parameter body: (body) WebhookCreateRequest object 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func createWebhook1(body: WebhookCreateRequest, completion: @escaping ((_ data: WebhookResponse?,_ error: Error?) -> Void)) {
-        createWebhook1WithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func createWebhook(body: WebhookCreateRequest, completion: @escaping ((_ data: WebhookResponse?,_ error: Error?) -> Void)) {
+        createWebhookWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
@@ -114,7 +114,7 @@ open class DefaultAPI {
 
      - returns: RequestBuilder<WebhookResponse> 
      */
-    open class func createWebhook1WithRequestBuilder(body: WebhookCreateRequest) -> RequestBuilder<WebhookResponse> {
+    open class func createWebhookWithRequestBuilder(body: WebhookCreateRequest) -> RequestBuilder<WebhookResponse> {
         let path = "/v6/webhooks"
         let URLString = ExtoleClientAPIAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
@@ -132,8 +132,8 @@ open class DefaultAPI {
      - parameter webhookId: (path) The id of the webhook to be updated. 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func updateWebhook1(body: WebhookUpdateRequest, webhookId: String, completion: @escaping ((_ data: WebhookResponse?,_ error: Error?) -> Void)) {
-        updateWebhook1WithRequestBuilder(body: body, webhookId: webhookId).execute { (response, error) -> Void in
+    open class func updateWebhook(body: WebhookUpdateRequest, webhookId: String, completion: @escaping ((_ data: WebhookResponse?,_ error: Error?) -> Void)) {
+        updateWebhookWithRequestBuilder(body: body, webhookId: webhookId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
@@ -172,7 +172,7 @@ open class DefaultAPI {
 
      - returns: RequestBuilder<WebhookResponse> 
      */
-    open class func updateWebhook1WithRequestBuilder(body: WebhookUpdateRequest, webhookId: String) -> RequestBuilder<WebhookResponse> {
+    open class func updateWebhookWithRequestBuilder(body: WebhookUpdateRequest, webhookId: String) -> RequestBuilder<WebhookResponse> {
         var path = "/v6/webhooks/{webhook_id}"
         let webhookIdPreEscape = "\(webhookId)"
         let webhookIdPostEscape = webhookIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
