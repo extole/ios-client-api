@@ -11,25 +11,25 @@ import Foundation
 
 public class JavaType: Codable {
 
+    public var bindings: TypeBindings?
+    public var superClass: JavaType?
+    public var contentValueHandler: String?
+    public var contentTypeHandler: String?
+    public var recordType: Bool?
+    public var enumImplType: Bool?
+    public var referencedType: JavaType?
     public var containerType: Bool?
     public var arrayType: Bool?
+    public var javaLangObject: Bool?
+    public var collectionLikeType: Bool?
+    public var mapLikeType: Bool?
     public var concrete: Bool?
     public var throwable: Bool?
     public var valueHandler: String?
     public var typeHandler: String?
     public var erasedSignature: String?
-    public var javaLangObject: Bool?
-    public var collectionLikeType: Bool?
-    public var mapLikeType: Bool?
     public var keyType: JavaType?
     public var enumType: Bool?
-    public var recordType: Bool?
-    public var enumImplType: Bool?
-    public var referencedType: JavaType?
-    public var bindings: TypeBindings?
-    public var superClass: JavaType?
-    public var contentValueHandler: String?
-    public var contentTypeHandler: String?
     public var contentType: JavaType?
     public var interface: Bool?
     public var primitive: Bool?
@@ -40,26 +40,26 @@ public class JavaType: Codable {
     public var typeName: String?
     public var referenceType: Bool?
 
-    public init(containerType: Bool? = nil, arrayType: Bool? = nil, concrete: Bool? = nil, throwable: Bool? = nil, valueHandler: String? = nil, typeHandler: String? = nil, erasedSignature: String? = nil, javaLangObject: Bool? = nil, collectionLikeType: Bool? = nil, mapLikeType: Bool? = nil, keyType: JavaType? = nil, enumType: Bool? = nil, recordType: Bool? = nil, enumImplType: Bool? = nil, referencedType: JavaType? = nil, bindings: TypeBindings? = nil, superClass: JavaType? = nil, contentValueHandler: String? = nil, contentTypeHandler: String? = nil, contentType: JavaType? = nil, interface: Bool? = nil, primitive: Bool? = nil, interfaces: [JavaType]? = nil, abstract: Bool? = nil, genericSignature: String? = nil, _final: Bool? = nil, typeName: String? = nil, referenceType: Bool? = nil) {
+    public init(bindings: TypeBindings? = nil, superClass: JavaType? = nil, contentValueHandler: String? = nil, contentTypeHandler: String? = nil, recordType: Bool? = nil, enumImplType: Bool? = nil, referencedType: JavaType? = nil, containerType: Bool? = nil, arrayType: Bool? = nil, javaLangObject: Bool? = nil, collectionLikeType: Bool? = nil, mapLikeType: Bool? = nil, concrete: Bool? = nil, throwable: Bool? = nil, valueHandler: String? = nil, typeHandler: String? = nil, erasedSignature: String? = nil, keyType: JavaType? = nil, enumType: Bool? = nil, contentType: JavaType? = nil, interface: Bool? = nil, primitive: Bool? = nil, interfaces: [JavaType]? = nil, abstract: Bool? = nil, genericSignature: String? = nil, _final: Bool? = nil, typeName: String? = nil, referenceType: Bool? = nil) {
+        self.bindings = bindings
+        self.superClass = superClass
+        self.contentValueHandler = contentValueHandler
+        self.contentTypeHandler = contentTypeHandler
+        self.recordType = recordType
+        self.enumImplType = enumImplType
+        self.referencedType = referencedType
         self.containerType = containerType
         self.arrayType = arrayType
+        self.javaLangObject = javaLangObject
+        self.collectionLikeType = collectionLikeType
+        self.mapLikeType = mapLikeType
         self.concrete = concrete
         self.throwable = throwable
         self.valueHandler = valueHandler
         self.typeHandler = typeHandler
         self.erasedSignature = erasedSignature
-        self.javaLangObject = javaLangObject
-        self.collectionLikeType = collectionLikeType
-        self.mapLikeType = mapLikeType
         self.keyType = keyType
         self.enumType = enumType
-        self.recordType = recordType
-        self.enumImplType = enumImplType
-        self.referencedType = referencedType
-        self.bindings = bindings
-        self.superClass = superClass
-        self.contentValueHandler = contentValueHandler
-        self.contentTypeHandler = contentTypeHandler
         self.contentType = contentType
         self.interface = interface
         self.primitive = primitive
@@ -72,25 +72,25 @@ public class JavaType: Codable {
     }
 
     public enum CodingKeys: String, CodingKey { 
+        case bindings
+        case superClass
+        case contentValueHandler
+        case contentTypeHandler
+        case recordType
+        case enumImplType
+        case referencedType
         case containerType
         case arrayType
+        case javaLangObject
+        case collectionLikeType
+        case mapLikeType
         case concrete
         case throwable
         case valueHandler
         case typeHandler
         case erasedSignature
-        case javaLangObject
-        case collectionLikeType
-        case mapLikeType
         case keyType
         case enumType
-        case recordType
-        case enumImplType
-        case referencedType
-        case bindings
-        case superClass
-        case contentValueHandler
-        case contentTypeHandler
         case contentType
         case interface
         case primitive
