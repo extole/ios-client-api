@@ -12,15 +12,15 @@ import Foundation
 public struct BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeDuration: Codable {
 
     public var seconds: Int64?
-    public var nano: Int?
     public var zero: Bool?
     public var negative: Bool?
+    public var nano: Int?
 
-    public init(seconds: Int64? = nil, nano: Int? = nil, zero: Bool? = nil, negative: Bool? = nil) {
+    public init(seconds: Int64? = nil, zero: Bool? = nil, negative: Bool? = nil, nano: Int? = nil) {
         self.seconds = seconds
-        self.nano = nano
         self.zero = zero
         self.negative = negative
+        self.nano = nano
     }
 
 

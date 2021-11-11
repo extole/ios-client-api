@@ -12,17 +12,17 @@ import Foundation
 public struct BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge: Codable {
 
     public var seconds: Int64?
-    public var units: [BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeUnits]?
-    public var nano: Int?
     public var zero: Bool?
     public var negative: Bool?
+    public var units: [BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeUnits]?
+    public var nano: Int?
 
-    public init(seconds: Int64? = nil, units: [BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeUnits]? = nil, nano: Int? = nil, zero: Bool? = nil, negative: Bool? = nil) {
+    public init(seconds: Int64? = nil, zero: Bool? = nil, negative: Bool? = nil, units: [BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeUnits]? = nil, nano: Int? = nil) {
         self.seconds = seconds
-        self.units = units
-        self.nano = nano
         self.zero = zero
         self.negative = negative
+        self.units = units
+        self.nano = nano
     }
 
 
