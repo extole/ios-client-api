@@ -28,11 +28,6 @@ public struct CampaignControllerTriggerApiVersionCheckResponse: Codable {
         case rewardEvent = "REWARD_EVENT"
         case hasPriorReward = "HAS_PRIOR_REWARD"
     }
-    public enum TriggerPhase: String, Codable { 
-        case matching = "MATCHING"
-        case qualifying = "QUALIFYING"
-        case quality = "QUALITY"
-    }
     public enum MatchType: String, Codable { 
         case greaterThan = "GREATER_THAN"
         case lessThan = "LESS_THAN"
@@ -43,13 +38,13 @@ public struct CampaignControllerTriggerApiVersionCheckResponse: Codable {
     }
     public var triggerId: String?
     public var triggerType: TriggerType?
-    public var triggerPhase: TriggerPhase?
-    public var triggerName: String?
+    public var triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase?
+    public var triggerName: BuildtimeEvaluatableControllerBuildtimeContextString?
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var matchType: MatchType?
     public var apiVersion: String?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, matchType: MatchType? = nil, apiVersion: String? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase? = nil, triggerName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, matchType: MatchType? = nil, apiVersion: String? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase

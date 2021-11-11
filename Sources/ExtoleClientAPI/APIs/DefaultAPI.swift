@@ -70,6 +70,65 @@ open class DefaultAPI {
         return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
     }
     /**
+     Creates a FileAsset
+
+     - parameter fileAssetMetadata: (form)  (optional)
+     - parameter fileInputStreamRequest: (form)  (optional)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func create(fileAssetMetadata: FileAssetMetadata? = nil, fileInputStreamRequest: FileInputStreamRequest? = nil, completion: @escaping ((_ data: FileAssetResponse?,_ error: Error?) -> Void)) {
+        createWithRequestBuilder(fileAssetMetadata: fileAssetMetadata, fileInputStreamRequest: fileInputStreamRequest).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     Creates a FileAsset
+     - POST /v6/files
+     - 
+
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example={
+  "size" : 0,
+  "user_id" : "user_id",
+  "name" : "name",
+  "format" : "CSV",
+  "id" : "id",
+  "created_date" : "2000-01-23T04:56:07.000+00:00",
+  "tags" : [ "tags", "tags" ]
+}}]
+     - parameter fileAssetMetadata: (form)  (optional)
+     - parameter fileInputStreamRequest: (form)  (optional)
+
+     - returns: RequestBuilder<FileAssetResponse> 
+     */
+    open class func createWithRequestBuilder(fileAssetMetadata: FileAssetMetadata? = nil, fileInputStreamRequest: FileInputStreamRequest? = nil) -> RequestBuilder<FileAssetResponse> {
+        let path = "/v6/files"
+        let URLString = ExtoleClientAPIAPI.basePath + path
+        let formParams: [String:Any?] = [
+                "fileAssetMetadata": fileAssetMetadata,
+                "fileInputStreamRequest": fileInputStreamRequest
+        ]
+
+        let nonNullParameters = APIHelper.rejectNil(formParams)
+        let parameters = APIHelper.convertBoolToString(nonNullParameters)
+        let url = URLComponents(string: URLString)
+
+
+        let requestBuilder: RequestBuilder<FileAssetResponse>.Type = ExtoleClientAPIAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+    /**
      Create webhook
 
      - parameter body: (body) WebhookCreateRequest object 
@@ -124,6 +183,188 @@ open class DefaultAPI {
         let requestBuilder: RequestBuilder<WebhookResponse>.Type = ExtoleClientAPIAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
+    }
+    /**
+     Used to remove a FileAsset by id
+
+     - parameter fileId: (path) File asset id 
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func delete(fileId: String, completion: @escaping ((_ data: FileAssetResponse?,_ error: Error?) -> Void)) {
+        deleteWithRequestBuilder(fileId: fileId).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     Used to remove a FileAsset by id
+     - DELETE /v6/files/{fileId}
+     - 
+
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example={
+  "size" : 0,
+  "user_id" : "user_id",
+  "name" : "name",
+  "format" : "CSV",
+  "id" : "id",
+  "created_date" : "2000-01-23T04:56:07.000+00:00",
+  "tags" : [ "tags", "tags" ]
+}}]
+     - parameter fileId: (path) File asset id 
+
+     - returns: RequestBuilder<FileAssetResponse> 
+     */
+    open class func deleteWithRequestBuilder(fileId: String) -> RequestBuilder<FileAssetResponse> {
+        var path = "/v6/files/{fileId}"
+        let fileIdPreEscape = "\(fileId)"
+        let fileIdPostEscape = fileIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{fileId}", with: fileIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPIAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        let url = URLComponents(string: URLString)
+
+
+        let requestBuilder: RequestBuilder<FileAssetResponse>.Type = ExtoleClientAPIAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "DELETE", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+    /**
+     Returns a FileAsset by id
+
+     - parameter fileId: (path) File asset id 
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func get(fileId: String, completion: @escaping ((_ data: FileAssetResponse?,_ error: Error?) -> Void)) {
+        getWithRequestBuilder(fileId: fileId).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     Returns a FileAsset by id
+     - GET /v6/files/{fileId}
+     - 
+
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example={
+  "size" : 0,
+  "user_id" : "user_id",
+  "name" : "name",
+  "format" : "CSV",
+  "id" : "id",
+  "created_date" : "2000-01-23T04:56:07.000+00:00",
+  "tags" : [ "tags", "tags" ]
+}}]
+     - parameter fileId: (path) File asset id 
+
+     - returns: RequestBuilder<FileAssetResponse> 
+     */
+    open class func getWithRequestBuilder(fileId: String) -> RequestBuilder<FileAssetResponse> {
+        var path = "/v6/files/{fileId}"
+        let fileIdPreEscape = "\(fileId)"
+        let fileIdPostEscape = fileIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{fileId}", with: fileIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPIAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        let url = URLComponents(string: URLString)
+
+
+        let requestBuilder: RequestBuilder<FileAssetResponse>.Type = ExtoleClientAPIAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+    /**
+     Returns a filtered list of FileAssets
+
+     - parameter name: (query)  (optional)
+     - parameter userId: (query)  (optional)
+     - parameter tags: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - parameter offset: (query)  (optional)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func list(name: String? = nil, userId: String? = nil, tags: [String]? = nil, limit: Int? = nil, offset: Int? = nil, completion: @escaping ((_ data: [FileAssetResponse]?,_ error: Error?) -> Void)) {
+        listWithRequestBuilder(name: name, userId: userId, tags: tags, limit: limit, offset: offset).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     Returns a filtered list of FileAssets
+     - GET /v6/files
+     - 
+
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example=[ {
+  "size" : 0,
+  "user_id" : "user_id",
+  "name" : "name",
+  "format" : "CSV",
+  "id" : "id",
+  "created_date" : "2000-01-23T04:56:07.000+00:00",
+  "tags" : [ "tags", "tags" ]
+}, {
+  "size" : 0,
+  "user_id" : "user_id",
+  "name" : "name",
+  "format" : "CSV",
+  "id" : "id",
+  "created_date" : "2000-01-23T04:56:07.000+00:00",
+  "tags" : [ "tags", "tags" ]
+} ]}]
+     - parameter name: (query)  (optional)
+     - parameter userId: (query)  (optional)
+     - parameter tags: (query)  (optional)
+     - parameter limit: (query)  (optional)
+     - parameter offset: (query)  (optional)
+
+     - returns: RequestBuilder<[FileAssetResponse]> 
+     */
+    open class func listWithRequestBuilder(name: String? = nil, userId: String? = nil, tags: [String]? = nil, limit: Int? = nil, offset: Int? = nil) -> RequestBuilder<[FileAssetResponse]> {
+        let path = "/v6/files"
+        let URLString = ExtoleClientAPIAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        var url = URLComponents(string: URLString)
+        url?.queryItems = APIHelper.mapValuesToQueryItems([
+                        "name": name, 
+                        "user_id": userId, 
+                        "tags": tags, 
+                        "limit": limit?.encodeToJSON(), 
+                        "offset": offset?.encodeToJSON()
+        ])
+
+
+        let requestBuilder: RequestBuilder<[FileAssetResponse]>.Type = ExtoleClientAPIAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
     }
     /**
      Update webhook

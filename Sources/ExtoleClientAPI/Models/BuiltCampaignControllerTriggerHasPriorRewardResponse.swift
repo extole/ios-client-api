@@ -70,8 +70,8 @@ public struct BuiltCampaignControllerTriggerHasPriorRewardResponse: Codable {
     public var filterNames: [String]?
     public var filterScope: FilterScope?
     public var filterSlots: [String]?
-    public var filterMinAge: Int64?
-    public var filterMaxAge: Int64?
+    public var filterMinAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge?
+    public var filterMaxAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge?
     public var filterMinDate: Date?
     public var filterMaxDate: Date?
     public var filterRewardSupplierIds: [String]?
@@ -84,7 +84,7 @@ public struct BuiltCampaignControllerTriggerHasPriorRewardResponse: Codable {
     public var countMin: Int?
     public var countMatches: [Int]?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, filterNames: [String]? = nil, filterScope: FilterScope? = nil, filterSlots: [String]? = nil, filterMinAge: Int64? = nil, filterMaxAge: Int64? = nil, filterMinDate: Date? = nil, filterMaxDate: Date? = nil, filterRewardSupplierIds: [String]? = nil, filterFaceValueTypes: [FilterFaceValueTypes]? = nil, filterStates: [FilterStates]? = nil, filterExpressions: [String]? = nil, sumOfFaceValueMax: Decimal? = nil, sumOfFaceValueMin: Decimal? = nil, countMax: Int? = nil, countMin: Int? = nil, countMatches: [Int]? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, filterNames: [String]? = nil, filterScope: FilterScope? = nil, filterSlots: [String]? = nil, filterMinAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge? = nil, filterMaxAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge? = nil, filterMinDate: Date? = nil, filterMaxDate: Date? = nil, filterRewardSupplierIds: [String]? = nil, filterFaceValueTypes: [FilterFaceValueTypes]? = nil, filterStates: [FilterStates]? = nil, filterExpressions: [String]? = nil, sumOfFaceValueMax: Decimal? = nil, sumOfFaceValueMin: Decimal? = nil, countMax: Int? = nil, countMin: Int? = nil, countMatches: [Int]? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase

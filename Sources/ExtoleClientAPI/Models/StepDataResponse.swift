@@ -14,6 +14,7 @@ public struct StepDataResponse: Codable {
     public enum Scope: String, Codable { 
         case _public = "PUBLIC"
         case _private = "PRIVATE"
+        case client = "CLIENT"
     }
     public enum PersistTypes: String, Codable { 
         case journey = "JOURNEY"

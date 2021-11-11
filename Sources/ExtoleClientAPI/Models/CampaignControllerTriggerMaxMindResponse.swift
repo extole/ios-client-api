@@ -28,11 +28,6 @@ public struct CampaignControllerTriggerMaxMindResponse: Codable {
         case rewardEvent = "REWARD_EVENT"
         case hasPriorReward = "HAS_PRIOR_REWARD"
     }
-    public enum TriggerPhase: String, Codable { 
-        case matching = "MATCHING"
-        case qualifying = "QUALIFYING"
-        case quality = "QUALITY"
-    }
     public enum DefaultQualityScore: String, Codable { 
         case error = "ERROR"
         case low = "LOW"
@@ -40,15 +35,15 @@ public struct CampaignControllerTriggerMaxMindResponse: Codable {
     }
     public var triggerId: String?
     public var triggerType: TriggerType?
-    public var triggerPhase: TriggerPhase?
-    public var triggerName: String?
+    public var triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase?
+    public var triggerName: BuildtimeEvaluatableControllerBuildtimeContextString?
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var defaultQualityScore: DefaultQualityScore?
     public var riskThreshold: Int64?
     public var ipThreshold: Int64?
     public var allowHighRiskEmail: Bool?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, defaultQualityScore: DefaultQualityScore? = nil, riskThreshold: Int64? = nil, ipThreshold: Int64? = nil, allowHighRiskEmail: Bool? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase? = nil, triggerName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, defaultQualityScore: DefaultQualityScore? = nil, riskThreshold: Int64? = nil, ipThreshold: Int64? = nil, allowHighRiskEmail: Bool? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase

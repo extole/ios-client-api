@@ -561,14 +561,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -594,14 +594,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -1194,14 +1194,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -1227,14 +1227,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -1831,14 +1831,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -1864,14 +1864,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -3513,14 +3513,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -3546,14 +3546,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -4154,14 +4154,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -4187,14 +4187,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -4743,14 +4743,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -4776,14 +4776,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -5381,14 +5381,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -5414,14 +5414,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -5970,14 +5970,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -6003,14 +6003,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -6602,14 +6602,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
@@ -6635,14 +6635,14 @@ open class V2campaignsAPI {
     "component_references" : [ null, null ],
     "selectors" : { },
     "triggers" : [ {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]
     }, {
-      "trigger_name" : "trigger_name",
-      "trigger_phase" : "MATCHING",
+      "trigger_name" : { },
+      "trigger_phase" : { },
       "trigger_id" : "trigger_id",
       "trigger_type" : "SHARE",
       "component_references" : [ null, null ]

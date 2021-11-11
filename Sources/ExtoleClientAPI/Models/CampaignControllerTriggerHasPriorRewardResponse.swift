@@ -28,63 +28,30 @@ public struct CampaignControllerTriggerHasPriorRewardResponse: Codable {
         case rewardEvent = "REWARD_EVENT"
         case hasPriorReward = "HAS_PRIOR_REWARD"
     }
-    public enum TriggerPhase: String, Codable { 
-        case matching = "MATCHING"
-        case qualifying = "QUALIFYING"
-        case quality = "QUALITY"
-    }
-    public enum FilterScope: String, Codable { 
-        case client = "CLIENT"
-        case program = "PROGRAM"
-        case campaign = "CAMPAIGN"
-        case attributed = "ATTRIBUTED"
-    }
-    public enum FilterFaceValueTypes: String, Codable { 
-        case percentOff = "PERCENT_OFF"
-        case points = "POINTS"
-        case usd = "USD"
-        case gbp = "GBP"
-        case eur = "EUR"
-        case jpy = "JPY"
-        case cny = "CNY"
-        case cad = "CAD"
-        case aud = "AUD"
-        case brl = "BRL"
-        case inr = "INR"
-        case nzd = "NZD"
-    }
-    public enum FilterStates: String, Codable { 
-        case earned = "EARNED"
-        case fulfilled = "FULFILLED"
-        case sent = "SENT"
-        case redeemed = "REDEEMED"
-        case failed = "FAILED"
-        case canceled = "CANCELED"
-        case revoked = "REVOKED"
-    }
     public var triggerId: String?
     public var triggerType: TriggerType?
-    public var triggerPhase: TriggerPhase?
-    public var triggerName: String?
+    public var triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase?
+    public var triggerName: BuildtimeEvaluatableControllerBuildtimeContextString?
     public var componentReferences: [CampaignComponentReferenceResponse]?
-    public var filterNames: [String]?
-    public var filterScope: FilterScope?
-    public var filterSlots: [String]?
-    public var filterMinAge: Int64?
-    public var filterMaxAge: Int64?
-    public var filterMinDate: Date?
-    public var filterMaxDate: Date?
-    public var filterRewardSupplierIds: [String]?
-    public var filterFaceValueTypes: [FilterFaceValueTypes]?
-    public var filterStates: [FilterStates]?
+    public var filterNames: BuildtimeEvaluatableControllerBuildtimeContextSetString?
+    public var filterScope: BuildtimeEvaluatableControllerBuildtimeContextFilterScope?
+    public var filterSlots: BuildtimeEvaluatableControllerBuildtimeContextSetString?
+    public var filterMinAge: BuildtimeEvaluatableControllerBuildtimeContextOptionalDuration?
+    public var filterMaxAge: BuildtimeEvaluatableControllerBuildtimeContextOptionalDuration?
+    public var filterMinDate: BuildtimeEvaluatableControllerBuildtimeContextOptionalZonedDateTime?
+    public var filterMaxDate: BuildtimeEvaluatableControllerBuildtimeContextOptionalZonedDateTime?
+    public var filterRewardSupplierIds: BuildtimeEvaluatableControllerBuildtimeContextSetIdObject?
+    public var filterFaceValueTypes: BuildtimeEvaluatableControllerBuildtimeContextSetFaceValueType?
+    public var filterStates: BuildtimeEvaluatableControllerBuildtimeContextSetRewardState?
     public var filterExpressions: [String]?
-    public var sumOfFaceValueMax: Decimal?
-    public var sumOfFaceValueMin: Decimal?
-    public var countMax: Int?
-    public var countMin: Int?
-    public var countMatches: [Int]?
+    public var filterExpression: BuildtimeEvaluatableControllerBuildtimeContextRuntimeEvaluatableHasPriorRewardTriggerContextBoolean?
+    public var sumOfFaceValueMax: BuildtimeEvaluatableControllerBuildtimeContextOptionalBigDecimal?
+    public var sumOfFaceValueMin: BuildtimeEvaluatableControllerBuildtimeContextOptionalBigDecimal?
+    public var countMax: BuildtimeEvaluatableControllerBuildtimeContextOptionalInteger?
+    public var countMin: BuildtimeEvaluatableControllerBuildtimeContextOptionalInteger?
+    public var countMatches: BuildtimeEvaluatableControllerBuildtimeContextSetInteger?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, filterNames: [String]? = nil, filterScope: FilterScope? = nil, filterSlots: [String]? = nil, filterMinAge: Int64? = nil, filterMaxAge: Int64? = nil, filterMinDate: Date? = nil, filterMaxDate: Date? = nil, filterRewardSupplierIds: [String]? = nil, filterFaceValueTypes: [FilterFaceValueTypes]? = nil, filterStates: [FilterStates]? = nil, filterExpressions: [String]? = nil, sumOfFaceValueMax: Decimal? = nil, sumOfFaceValueMin: Decimal? = nil, countMax: Int? = nil, countMin: Int? = nil, countMatches: [Int]? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase? = nil, triggerName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, filterNames: BuildtimeEvaluatableControllerBuildtimeContextSetString? = nil, filterScope: BuildtimeEvaluatableControllerBuildtimeContextFilterScope? = nil, filterSlots: BuildtimeEvaluatableControllerBuildtimeContextSetString? = nil, filterMinAge: BuildtimeEvaluatableControllerBuildtimeContextOptionalDuration? = nil, filterMaxAge: BuildtimeEvaluatableControllerBuildtimeContextOptionalDuration? = nil, filterMinDate: BuildtimeEvaluatableControllerBuildtimeContextOptionalZonedDateTime? = nil, filterMaxDate: BuildtimeEvaluatableControllerBuildtimeContextOptionalZonedDateTime? = nil, filterRewardSupplierIds: BuildtimeEvaluatableControllerBuildtimeContextSetIdObject? = nil, filterFaceValueTypes: BuildtimeEvaluatableControllerBuildtimeContextSetFaceValueType? = nil, filterStates: BuildtimeEvaluatableControllerBuildtimeContextSetRewardState? = nil, filterExpressions: [String]? = nil, filterExpression: BuildtimeEvaluatableControllerBuildtimeContextRuntimeEvaluatableHasPriorRewardTriggerContextBoolean? = nil, sumOfFaceValueMax: BuildtimeEvaluatableControllerBuildtimeContextOptionalBigDecimal? = nil, sumOfFaceValueMin: BuildtimeEvaluatableControllerBuildtimeContextOptionalBigDecimal? = nil, countMax: BuildtimeEvaluatableControllerBuildtimeContextOptionalInteger? = nil, countMin: BuildtimeEvaluatableControllerBuildtimeContextOptionalInteger? = nil, countMatches: BuildtimeEvaluatableControllerBuildtimeContextSetInteger? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase
@@ -101,6 +68,7 @@ public struct CampaignControllerTriggerHasPriorRewardResponse: Codable {
         self.filterFaceValueTypes = filterFaceValueTypes
         self.filterStates = filterStates
         self.filterExpressions = filterExpressions
+        self.filterExpression = filterExpression
         self.sumOfFaceValueMax = sumOfFaceValueMax
         self.sumOfFaceValueMin = sumOfFaceValueMin
         self.countMax = countMax
@@ -125,6 +93,7 @@ public struct CampaignControllerTriggerHasPriorRewardResponse: Codable {
         case filterFaceValueTypes = "filter_face_value_types"
         case filterStates = "filter_states"
         case filterExpressions = "filter_expressions"
+        case filterExpression = "filter_expression"
         case sumOfFaceValueMax = "sum_of_face_value_max"
         case sumOfFaceValueMin = "sum_of_face_value_min"
         case countMax = "count_max"

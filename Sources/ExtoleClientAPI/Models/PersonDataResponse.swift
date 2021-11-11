@@ -14,6 +14,7 @@ public struct PersonDataResponse: Codable {
     public enum Scope: String, Codable { 
         case _public = "PUBLIC"
         case _private = "PRIVATE"
+        case client = "CLIENT"
     }
     public var name: String?
     public var scope: Scope?

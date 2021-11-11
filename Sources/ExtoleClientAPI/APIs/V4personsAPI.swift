@@ -16,6 +16,7 @@ open class V4personsAPI {
     public enum Scope_getData: String { 
         case _public = "PUBLIC"
         case _private = "PRIVATE"
+        case client = "CLIENT"
     }
 
     /**

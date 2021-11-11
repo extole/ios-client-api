@@ -28,21 +28,16 @@ public struct CampaignControllerTriggerScoreResponse: Codable {
         case rewardEvent = "REWARD_EVENT"
         case hasPriorReward = "HAS_PRIOR_REWARD"
     }
-    public enum TriggerPhase: String, Codable { 
-        case matching = "MATCHING"
-        case qualifying = "QUALIFYING"
-        case quality = "QUALITY"
-    }
     public var triggerId: String?
     public var triggerType: TriggerType?
-    public var triggerPhase: TriggerPhase?
-    public var triggerName: String?
+    public var triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase?
+    public var triggerName: BuildtimeEvaluatableControllerBuildtimeContextString?
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var scoreResult: String?
     public var causeEventName: String?
     public var channel: String?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, scoreResult: String? = nil, causeEventName: String? = nil, channel: String? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase? = nil, triggerName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, scoreResult: String? = nil, causeEventName: String? = nil, channel: String? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase

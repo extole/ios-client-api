@@ -57,15 +57,19 @@ public struct BuiltCampaignControllerTriggerHasPriorStepResponse: Codable {
     public var filterScope: FilterScope?
     public var filterPartnerEventIdName: String?
     public var filterPartnerEventIdValue: String?
+    public var filterPartnerEventId: PartnerEventId?
     public var filterMatchingPartnerEventId: FilterMatchingPartnerEventId?
-    public var filterMinAge: Int64?
-    public var filterMaxAge: Int64?
+    public var filterMinAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge?
+    public var filterMaxAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge?
     public var filterMinValue: Decimal?
     public var filterMaxValue: Decimal?
     public var filterQuality: FilterQuality?
     public var filterExpressions: [String]?
+    public var filterExpression: RuntimeEvaluatableStepHasPriorStepTriggerContextBoolean?
     public var filterProgramLabel: String?
     public var filterCampaignId: String?
+    public var filterProgramLabels: RuntimeEvaluatableHasPriorStepTriggerContextSetString?
+    public var filterCampaignIds: RuntimeEvaluatableHasPriorStepTriggerContextSetIdObject?
     public var filterMinDate: Date?
     public var filterMaxDate: Date?
     public var sumOfValueMin: Decimal?
@@ -74,7 +78,7 @@ public struct BuiltCampaignControllerTriggerHasPriorStepResponse: Codable {
     public var countMax: Int?
     public var countMatches: [Int]?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, filterNames: [String]? = nil, filterScope: FilterScope? = nil, filterPartnerEventIdName: String? = nil, filterPartnerEventIdValue: String? = nil, filterMatchingPartnerEventId: FilterMatchingPartnerEventId? = nil, filterMinAge: Int64? = nil, filterMaxAge: Int64? = nil, filterMinValue: Decimal? = nil, filterMaxValue: Decimal? = nil, filterQuality: FilterQuality? = nil, filterExpressions: [String]? = nil, filterProgramLabel: String? = nil, filterCampaignId: String? = nil, filterMinDate: Date? = nil, filterMaxDate: Date? = nil, sumOfValueMin: Decimal? = nil, sumOfValueMax: Decimal? = nil, countMin: Int? = nil, countMax: Int? = nil, countMatches: [Int]? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, filterNames: [String]? = nil, filterScope: FilterScope? = nil, filterPartnerEventIdName: String? = nil, filterPartnerEventIdValue: String? = nil, filterPartnerEventId: PartnerEventId? = nil, filterMatchingPartnerEventId: FilterMatchingPartnerEventId? = nil, filterMinAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge? = nil, filterMaxAge: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAge? = nil, filterMinValue: Decimal? = nil, filterMaxValue: Decimal? = nil, filterQuality: FilterQuality? = nil, filterExpressions: [String]? = nil, filterExpression: RuntimeEvaluatableStepHasPriorStepTriggerContextBoolean? = nil, filterProgramLabel: String? = nil, filterCampaignId: String? = nil, filterProgramLabels: RuntimeEvaluatableHasPriorStepTriggerContextSetString? = nil, filterCampaignIds: RuntimeEvaluatableHasPriorStepTriggerContextSetIdObject? = nil, filterMinDate: Date? = nil, filterMaxDate: Date? = nil, sumOfValueMin: Decimal? = nil, sumOfValueMax: Decimal? = nil, countMin: Int? = nil, countMax: Int? = nil, countMatches: [Int]? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase
@@ -84,6 +88,7 @@ public struct BuiltCampaignControllerTriggerHasPriorStepResponse: Codable {
         self.filterScope = filterScope
         self.filterPartnerEventIdName = filterPartnerEventIdName
         self.filterPartnerEventIdValue = filterPartnerEventIdValue
+        self.filterPartnerEventId = filterPartnerEventId
         self.filterMatchingPartnerEventId = filterMatchingPartnerEventId
         self.filterMinAge = filterMinAge
         self.filterMaxAge = filterMaxAge
@@ -91,8 +96,11 @@ public struct BuiltCampaignControllerTriggerHasPriorStepResponse: Codable {
         self.filterMaxValue = filterMaxValue
         self.filterQuality = filterQuality
         self.filterExpressions = filterExpressions
+        self.filterExpression = filterExpression
         self.filterProgramLabel = filterProgramLabel
         self.filterCampaignId = filterCampaignId
+        self.filterProgramLabels = filterProgramLabels
+        self.filterCampaignIds = filterCampaignIds
         self.filterMinDate = filterMinDate
         self.filterMaxDate = filterMaxDate
         self.sumOfValueMin = sumOfValueMin
@@ -112,6 +120,7 @@ public struct BuiltCampaignControllerTriggerHasPriorStepResponse: Codable {
         case filterScope = "filter_scope"
         case filterPartnerEventIdName = "filter_partner_event_id_name"
         case filterPartnerEventIdValue = "filter_partner_event_id_value"
+        case filterPartnerEventId = "filter_partner_event_id"
         case filterMatchingPartnerEventId = "filter_matching_partner_event_id"
         case filterMinAge = "filter_min_age"
         case filterMaxAge = "filter_max_age"
@@ -119,8 +128,11 @@ public struct BuiltCampaignControllerTriggerHasPriorStepResponse: Codable {
         case filterMaxValue = "filter_max_value"
         case filterQuality = "filter_quality"
         case filterExpressions = "filter_expressions"
+        case filterExpression = "filter_expression"
         case filterProgramLabel = "filter_program_label"
         case filterCampaignId = "filter_campaign_id"
+        case filterProgramLabels = "filter_program_labels"
+        case filterCampaignIds = "filter_campaign_ids"
         case filterMinDate = "filter_min_date"
         case filterMaxDate = "filter_max_date"
         case sumOfValueMin = "sum_of_value_min"

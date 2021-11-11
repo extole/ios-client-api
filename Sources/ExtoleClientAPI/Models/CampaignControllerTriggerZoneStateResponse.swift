@@ -28,11 +28,6 @@ public struct CampaignControllerTriggerZoneStateResponse: Codable {
         case rewardEvent = "REWARD_EVENT"
         case hasPriorReward = "HAS_PRIOR_REWARD"
     }
-    public enum TriggerPhase: String, Codable { 
-        case matching = "MATCHING"
-        case qualifying = "QUALIFYING"
-        case quality = "QUALITY"
-    }
     public enum CreativeClassifications: String, Codable { 
         case _none = "NONE"
         case any = "ANY"
@@ -42,15 +37,15 @@ public struct CampaignControllerTriggerZoneStateResponse: Codable {
     }
     public var triggerId: String?
     public var triggerType: TriggerType?
-    public var triggerPhase: TriggerPhase?
-    public var triggerName: String?
+    public var triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase?
+    public var triggerName: BuildtimeEvaluatableControllerBuildtimeContextString?
     public var componentReferences: [CampaignComponentReferenceResponse]?
-    public var zoneName: String?
-    public var stepName: String?
+    public var zoneName: BuildtimeEvaluatableControllerBuildtimeContextOptionalString?
+    public var stepName: BuildtimeEvaluatableControllerBuildtimeContextOptionalString?
     public var invertMappingState: Bool?
     public var creativeClassifications: [CreativeClassifications]?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: TriggerPhase? = nil, triggerName: String? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, zoneName: String? = nil, stepName: String? = nil, invertMappingState: Bool? = nil, creativeClassifications: [CreativeClassifications]? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase? = nil, triggerName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, zoneName: BuildtimeEvaluatableControllerBuildtimeContextOptionalString? = nil, stepName: BuildtimeEvaluatableControllerBuildtimeContextOptionalString? = nil, invertMappingState: Bool? = nil, creativeClassifications: [CreativeClassifications]? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase
