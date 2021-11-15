@@ -11,15 +11,15 @@ import Foundation
 
 public struct BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeUnits: Codable {
 
-    public var dateBased: Bool?
     public var duration: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeDuration?
     public var durationEstimated: Bool?
+    public var dateBased: Bool?
     public var timeBased: Bool?
 
-    public init(dateBased: Bool? = nil, duration: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeDuration? = nil, durationEstimated: Bool? = nil, timeBased: Bool? = nil) {
-        self.dateBased = dateBased
+    public init(duration: BuiltCampaignControllerTriggerHasPriorRewardResponseFilterMinAgeDuration? = nil, durationEstimated: Bool? = nil, dateBased: Bool? = nil, timeBased: Bool? = nil) {
         self.duration = duration
         self.durationEstimated = durationEstimated
+        self.dateBased = dateBased
         self.timeBased = timeBased
     }
 

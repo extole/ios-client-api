@@ -19,10 +19,10 @@ public struct PersonShareResponse: Codable {
     public var recipient: String?
     public var friendPersonId: String?
     public var link: String?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
     public var partnerId: PartnerEventIdResponse?
 
-    public init(shareId: String? = nil, shareableId: String? = nil, channel: String? = nil, message: String? = nil, shareDate: Date? = nil, recipient: String? = nil, friendPersonId: String? = nil, link: String? = nil, data: [String:String]? = nil, partnerId: PartnerEventIdResponse? = nil) {
+    public init(shareId: String? = nil, shareableId: String? = nil, channel: String? = nil, message: String? = nil, shareDate: Date? = nil, recipient: String? = nil, friendPersonId: String? = nil, link: String? = nil, data: [String:Entry?]? = nil, partnerId: PartnerEventIdResponse? = nil) {
         self.shareId = shareId
         self.shareableId = shareableId
         self.channel = channel

@@ -20,11 +20,11 @@ public struct SetDataPrehandlerActionResponse: Codable {
     }
     public var _id: String?
     public var type: ModelType?
-    public var data: [String:String]?
-    public var defaultData: [String:String]?
+    public var data: [String:Entry?]?
+    public var defaultData: [String:Entry?]?
     public var deleteData: [String]?
 
-    public init(_id: String? = nil, type: ModelType? = nil, data: [String:String]? = nil, defaultData: [String:String]? = nil, deleteData: [String]? = nil) {
+    public init(_id: String? = nil, type: ModelType? = nil, data: [String:Entry?]? = nil, defaultData: [String:Entry?]? = nil, deleteData: [String]? = nil) {
         self._id = _id
         self.type = type
         self.data = data

@@ -36,7 +36,7 @@ public struct PersonV2Response: Codable {
     public var cookieConsentType: CookieConsentType?
     public var processingConsent: String?
     public var processingConsentType: ProcessingConsentType?
-    public var parameters: [String:String]?
+    public var parameters: [String:Entry?]?
     public var blocked: Bool?
     public var selfRewardingBlocked: Bool?
     public var friendRewardingBlocked: Bool?
@@ -44,7 +44,7 @@ public struct PersonV2Response: Codable {
     public var locale: PersonLocaleV2Response?
     public var profileBlocks: ProfileBlockResponse?
 
-    public init(_id: String? = nil, email: String? = nil, firstName: String? = nil, lastName: String? = nil, pictureUrl: String? = nil, partnerUserId: String? = nil, cookieConsent: String? = nil, cookieConsentType: CookieConsentType? = nil, processingConsent: String? = nil, processingConsentType: ProcessingConsentType? = nil, parameters: [String:String]? = nil, blocked: Bool? = nil, selfRewardingBlocked: Bool? = nil, friendRewardingBlocked: Bool? = nil, requestContexts: [RequestContextResponse]? = nil, locale: PersonLocaleV2Response? = nil, profileBlocks: ProfileBlockResponse? = nil) {
+    public init(_id: String? = nil, email: String? = nil, firstName: String? = nil, lastName: String? = nil, pictureUrl: String? = nil, partnerUserId: String? = nil, cookieConsent: String? = nil, cookieConsentType: CookieConsentType? = nil, processingConsent: String? = nil, processingConsentType: ProcessingConsentType? = nil, parameters: [String:Entry?]? = nil, blocked: Bool? = nil, selfRewardingBlocked: Bool? = nil, friendRewardingBlocked: Bool? = nil, requestContexts: [RequestContextResponse]? = nil, locale: PersonLocaleV2Response? = nil, profileBlocks: ProfileBlockResponse? = nil) {
         self._id = _id
         self.email = email
         self.firstName = firstName

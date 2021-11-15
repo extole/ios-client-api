@@ -40,10 +40,10 @@ public struct CampaignControllerActionIncentivizeResponse: Codable {
     public var quality: Quality?
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var incentivizeActionType: BuildtimeEvaluatableControllerBuildtimeContextIncentivizeActionType?
-    public var overrides: [String:String]?
+    public var overrides: [String:Entry?]?
     public var actionName: String?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, incentivizeActionType: BuildtimeEvaluatableControllerBuildtimeContextIncentivizeActionType? = nil, overrides: [String:String]? = nil, actionName: String? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, incentivizeActionType: BuildtimeEvaluatableControllerBuildtimeContextIncentivizeActionType? = nil, overrides: [String:Entry?]? = nil, actionName: String? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality

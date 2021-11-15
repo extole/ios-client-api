@@ -33,10 +33,10 @@ public struct CampaignControllerTriggerExpressionResponse: Codable {
     public var triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase?
     public var triggerName: BuildtimeEvaluatableControllerBuildtimeContextString?
     public var componentReferences: [CampaignComponentReferenceResponse]?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
     public var expression: BuildtimeEvaluatableControllerBuildtimeContextRuntimeEvaluatableExpressionTriggerContextBoolean?
 
-    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase? = nil, triggerName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, data: [String:String]? = nil, expression: BuildtimeEvaluatableControllerBuildtimeContextRuntimeEvaluatableExpressionTriggerContextBoolean? = nil) {
+    public init(triggerId: String? = nil, triggerType: TriggerType? = nil, triggerPhase: BuildtimeEvaluatableControllerBuildtimeContextCampaignControllerTriggerPhase? = nil, triggerName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, data: [String:Entry?]? = nil, expression: BuildtimeEvaluatableControllerBuildtimeContextRuntimeEvaluatableExpressionTriggerContextBoolean? = nil) {
         self.triggerId = triggerId
         self.triggerType = triggerType
         self.triggerPhase = triggerPhase

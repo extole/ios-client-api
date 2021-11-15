@@ -11,13 +11,6 @@ import Foundation
 
 public class JavaType: Codable {
 
-    public var enumImplType: Bool?
-    public var recordType: Bool?
-    public var referencedType: JavaType?
-    public var bindings: TypeBindings?
-    public var superClass: JavaType?
-    public var contentValueHandler: String?
-    public var contentTypeHandler: String?
     public var containerType: Bool?
     public var arrayType: Bool?
     public var concrete: Bool?
@@ -30,6 +23,13 @@ public class JavaType: Codable {
     public var mapLikeType: Bool?
     public var keyType: JavaType?
     public var enumType: Bool?
+    public var enumImplType: Bool?
+    public var referencedType: JavaType?
+    public var bindings: TypeBindings?
+    public var superClass: JavaType?
+    public var contentValueHandler: String?
+    public var contentTypeHandler: String?
+    public var recordType: Bool?
     public var contentType: JavaType?
     public var interface: Bool?
     public var primitive: Bool?
@@ -40,14 +40,7 @@ public class JavaType: Codable {
     public var typeName: String?
     public var referenceType: Bool?
 
-    public init(enumImplType: Bool? = nil, recordType: Bool? = nil, referencedType: JavaType? = nil, bindings: TypeBindings? = nil, superClass: JavaType? = nil, contentValueHandler: String? = nil, contentTypeHandler: String? = nil, containerType: Bool? = nil, arrayType: Bool? = nil, concrete: Bool? = nil, throwable: Bool? = nil, valueHandler: String? = nil, typeHandler: String? = nil, erasedSignature: String? = nil, javaLangObject: Bool? = nil, collectionLikeType: Bool? = nil, mapLikeType: Bool? = nil, keyType: JavaType? = nil, enumType: Bool? = nil, contentType: JavaType? = nil, interface: Bool? = nil, primitive: Bool? = nil, interfaces: [JavaType]? = nil, abstract: Bool? = nil, genericSignature: String? = nil, _final: Bool? = nil, typeName: String? = nil, referenceType: Bool? = nil) {
-        self.enumImplType = enumImplType
-        self.recordType = recordType
-        self.referencedType = referencedType
-        self.bindings = bindings
-        self.superClass = superClass
-        self.contentValueHandler = contentValueHandler
-        self.contentTypeHandler = contentTypeHandler
+    public init(containerType: Bool? = nil, arrayType: Bool? = nil, concrete: Bool? = nil, throwable: Bool? = nil, valueHandler: String? = nil, typeHandler: String? = nil, erasedSignature: String? = nil, javaLangObject: Bool? = nil, collectionLikeType: Bool? = nil, mapLikeType: Bool? = nil, keyType: JavaType? = nil, enumType: Bool? = nil, enumImplType: Bool? = nil, referencedType: JavaType? = nil, bindings: TypeBindings? = nil, superClass: JavaType? = nil, contentValueHandler: String? = nil, contentTypeHandler: String? = nil, recordType: Bool? = nil, contentType: JavaType? = nil, interface: Bool? = nil, primitive: Bool? = nil, interfaces: [JavaType]? = nil, abstract: Bool? = nil, genericSignature: String? = nil, _final: Bool? = nil, typeName: String? = nil, referenceType: Bool? = nil) {
         self.containerType = containerType
         self.arrayType = arrayType
         self.concrete = concrete
@@ -60,6 +53,13 @@ public class JavaType: Codable {
         self.mapLikeType = mapLikeType
         self.keyType = keyType
         self.enumType = enumType
+        self.enumImplType = enumImplType
+        self.referencedType = referencedType
+        self.bindings = bindings
+        self.superClass = superClass
+        self.contentValueHandler = contentValueHandler
+        self.contentTypeHandler = contentTypeHandler
+        self.recordType = recordType
         self.contentType = contentType
         self.interface = interface
         self.primitive = primitive
@@ -72,13 +72,6 @@ public class JavaType: Codable {
     }
 
     public enum CodingKeys: String, CodingKey { 
-        case enumImplType
-        case recordType
-        case referencedType
-        case bindings
-        case superClass
-        case contentValueHandler
-        case contentTypeHandler
         case containerType
         case arrayType
         case concrete
@@ -91,6 +84,13 @@ public class JavaType: Codable {
         case mapLikeType
         case keyType
         case enumType
+        case enumImplType
+        case referencedType
+        case bindings
+        case superClass
+        case contentValueHandler
+        case contentTypeHandler
+        case recordType
         case contentType
         case interface
         case primitive

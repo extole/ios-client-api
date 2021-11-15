@@ -17,9 +17,9 @@ public struct PersonRelationshipResponse: Codable {
     public var container: String?
     public var updatedAt: Date?
     public var otherPersonId: String?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
 
-    public init(role: String? = nil, isParent: Bool? = nil, reason: String? = nil, container: String? = nil, updatedAt: Date? = nil, otherPersonId: String? = nil, data: [String:String]? = nil) {
+    public init(role: String? = nil, isParent: Bool? = nil, reason: String? = nil, container: String? = nil, updatedAt: Date? = nil, otherPersonId: String? = nil, data: [String:Entry?]? = nil) {
         self.role = role
         self.isParent = isParent
         self.reason = reason

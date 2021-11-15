@@ -28,7 +28,7 @@ public struct BatchJobResponse: Codable {
     public var status: Status?
     public var name: String?
     public var tags: [String]?
-    public var eventData: [String:String]?
+    public var eventData: [String:Entry?]?
     public var eventColumns: [String]?
     public var downloadUri: String?
     public var dataSource: DataSourceResponse?
@@ -36,7 +36,7 @@ public struct BatchJobResponse: Codable {
     public var failedRows: Int64?
     public var topicName: String?
 
-    public init(_id: String? = nil, eventName: String? = nil, createdDate: Date? = nil, startedDate: Date? = nil, completedDate: Date? = nil, status: Status? = nil, name: String? = nil, tags: [String]? = nil, eventData: [String:String]? = nil, eventColumns: [String]? = nil, downloadUri: String? = nil, dataSource: DataSourceResponse? = nil, successRows: Int64? = nil, failedRows: Int64? = nil, topicName: String? = nil) {
+    public init(_id: String? = nil, eventName: String? = nil, createdDate: Date? = nil, startedDate: Date? = nil, completedDate: Date? = nil, status: Status? = nil, name: String? = nil, tags: [String]? = nil, eventData: [String:Entry?]? = nil, eventColumns: [String]? = nil, downloadUri: String? = nil, dataSource: DataSourceResponse? = nil, successRows: Int64? = nil, failedRows: Int64? = nil, topicName: String? = nil) {
         self._id = _id
         self.eventName = eventName
         self.createdDate = createdDate

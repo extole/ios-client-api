@@ -42,10 +42,10 @@ public struct CampaignControllerActionFireAsPersonResponse: Codable {
     public var eventName: BuildtimeEvaluatableControllerBuildtimeContextString?
     public var asPersonIdentification: FireAsPersonIdentification?
     public var asPersonJourney: FireAsPersonJourney?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
     public var labels: [String]?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, eventName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, asPersonIdentification: FireAsPersonIdentification? = nil, asPersonJourney: FireAsPersonJourney? = nil, data: [String:String]? = nil, labels: [String]? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, eventName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, asPersonIdentification: FireAsPersonIdentification? = nil, asPersonJourney: FireAsPersonJourney? = nil, data: [String:Entry?]? = nil, labels: [String]? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality

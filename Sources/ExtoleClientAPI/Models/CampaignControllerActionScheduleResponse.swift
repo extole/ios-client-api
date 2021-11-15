@@ -43,9 +43,9 @@ public struct CampaignControllerActionScheduleResponse: Codable {
     public var delays: [Int64]?
     public var dates: [Date]?
     public var force: Bool?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, scheduleName: String? = nil, delays: [Int64]? = nil, dates: [Date]? = nil, force: Bool? = nil, data: [String:String]? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, scheduleName: String? = nil, delays: [Int64]? = nil, dates: [Date]? = nil, force: Bool? = nil, data: [String:Entry?]? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality

@@ -30,13 +30,13 @@ public struct StaticAudienceListResponse: Codable {
     public var state: State?
     public var _description: String?
     public var eventColumns: [String]?
-    public var eventData: [String:String]?
+    public var eventData: [String:Entry?]?
     public var memberCount: Int64?
     public var lastUpdate: Date?
     public var errorCode: String?
     public var reportId: String?
 
-    public init(type: ModelType? = nil, _id: String? = nil, name: String? = nil, tags: [String]? = nil, state: State? = nil, _description: String? = nil, eventColumns: [String]? = nil, eventData: [String:String]? = nil, memberCount: Int64? = nil, lastUpdate: Date? = nil, errorCode: String? = nil, reportId: String? = nil) {
+    public init(type: ModelType? = nil, _id: String? = nil, name: String? = nil, tags: [String]? = nil, state: State? = nil, _description: String? = nil, eventColumns: [String]? = nil, eventData: [String:Entry?]? = nil, memberCount: Int64? = nil, lastUpdate: Date? = nil, errorCode: String? = nil, reportId: String? = nil) {
         self.type = type
         self._id = _id
         self.name = name

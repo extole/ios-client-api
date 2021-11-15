@@ -21,9 +21,9 @@ public struct RestExceptionResponse: Codable {
     /** User readable English description of the error */
     public var message: String?
     /** Attributes related to the error, varies be error code, documented per endpoint */
-    public var parameters: [String:String]?
+    public var parameters: [String:Entry?]?
 
-    public init(uniqueId: String? = nil, httpStatusCode: Int? = nil, code: String? = nil, message: String? = nil, parameters: [String:String]? = nil) {
+    public init(uniqueId: String? = nil, httpStatusCode: Int? = nil, code: String? = nil, message: String? = nil, parameters: [String:Entry?]? = nil) {
         self.uniqueId = uniqueId
         self.httpStatusCode = httpStatusCode
         self.code = code

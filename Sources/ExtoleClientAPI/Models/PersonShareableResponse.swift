@@ -17,9 +17,9 @@ public struct PersonShareableResponse: Codable {
     public var link: String?
     public var personId: String?
     public var content: PersonShareableContentResponse?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
 
-    public init(code: String? = nil, key: String? = nil, label: String? = nil, link: String? = nil, personId: String? = nil, content: PersonShareableContentResponse? = nil, data: [String:String]? = nil) {
+    public init(code: String? = nil, key: String? = nil, label: String? = nil, link: String? = nil, personId: String? = nil, content: PersonShareableContentResponse? = nil, data: [String:Entry?]? = nil) {
         self.code = code
         self.key = key
         self.label = label

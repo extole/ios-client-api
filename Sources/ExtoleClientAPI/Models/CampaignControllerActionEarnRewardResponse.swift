@@ -44,13 +44,13 @@ public struct CampaignControllerActionEarnRewardResponse: Codable {
     public var pollingId: String?
     public var slots: [String]?
     public var tags: [String]?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
     public var programDomainId: String?
     public var sandbox: String?
     public var valueOfEventBeingRewarded: String?
     public var eventTime: RuntimeEvaluatableRewardActionContextOptionalInstant?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardName: String? = nil, rewardSupplierId: BuildtimeEvaluatableControllerBuildtimeContextOptionalIdObject? = nil, pollingId: String? = nil, slots: [String]? = nil, tags: [String]? = nil, data: [String:String]? = nil, programDomainId: String? = nil, sandbox: String? = nil, valueOfEventBeingRewarded: String? = nil, eventTime: RuntimeEvaluatableRewardActionContextOptionalInstant? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardName: String? = nil, rewardSupplierId: BuildtimeEvaluatableControllerBuildtimeContextOptionalIdObject? = nil, pollingId: String? = nil, slots: [String]? = nil, tags: [String]? = nil, data: [String:Entry?]? = nil, programDomainId: String? = nil, sandbox: String? = nil, valueOfEventBeingRewarded: String? = nil, eventTime: RuntimeEvaluatableRewardActionContextOptionalInstant? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality

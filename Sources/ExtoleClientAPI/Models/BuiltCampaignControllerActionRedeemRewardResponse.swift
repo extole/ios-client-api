@@ -40,10 +40,10 @@ public struct BuiltCampaignControllerActionRedeemRewardResponse: Codable {
     public var quality: Quality?
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var rewardId: String?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
     public var partnerEventId: String?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardId: String? = nil, data: [String:String]? = nil, partnerEventId: String? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, rewardId: String? = nil, data: [String:Entry?]? = nil, partnerEventId: String? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality

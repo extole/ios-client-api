@@ -40,9 +40,9 @@ public struct BuiltCampaignControllerActionSignalResponse: Codable {
     public var quality: Quality?
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var signalPollingId: String?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, signalPollingId: String? = nil, data: [String:String]? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, signalPollingId: String? = nil, data: [String:Entry?]? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality

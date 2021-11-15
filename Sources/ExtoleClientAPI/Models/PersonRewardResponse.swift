@@ -29,10 +29,10 @@ public struct PersonRewardResponse: Codable {
     public var tags: [String]?
     public var rewardName: String?
     public var valueOfRewardedEvent: Decimal?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
     public var expiryDate: Date?
 
-    public init(_id: String? = nil, rewardId: String? = nil, partnerRewardSupplierId: String? = nil, rewardSupplierId: String? = nil, amount: String? = nil, faceValue: String? = nil, faceValueType: String? = nil, dateIssued: Date? = nil, state: String? = nil, campaignId: String? = nil, programLabel: String? = nil, sandbox: String? = nil, partnerRewardId: String? = nil, dateEarned: Date? = nil, slots: [String]? = nil, tags: [String]? = nil, rewardName: String? = nil, valueOfRewardedEvent: Decimal? = nil, data: [String:String]? = nil, expiryDate: Date? = nil) {
+    public init(_id: String? = nil, rewardId: String? = nil, partnerRewardSupplierId: String? = nil, rewardSupplierId: String? = nil, amount: String? = nil, faceValue: String? = nil, faceValueType: String? = nil, dateIssued: Date? = nil, state: String? = nil, campaignId: String? = nil, programLabel: String? = nil, sandbox: String? = nil, partnerRewardId: String? = nil, dateEarned: Date? = nil, slots: [String]? = nil, tags: [String]? = nil, rewardName: String? = nil, valueOfRewardedEvent: Decimal? = nil, data: [String:Entry?]? = nil, expiryDate: Date? = nil) {
         self._id = _id
         self.rewardId = rewardId
         self.partnerRewardSupplierId = partnerRewardSupplierId

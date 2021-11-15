@@ -40,9 +40,9 @@ public struct CampaignControllerActionEmailResponse: Codable {
     public var quality: Quality?
     public var componentReferences: [CampaignComponentReferenceResponse]?
     public var zoneName: BuildtimeEvaluatableControllerBuildtimeContextString?
-    public var data: [String:String]?
+    public var data: [String:Entry?]?
 
-    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, zoneName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, data: [String:String]? = nil) {
+    public init(actionId: String? = nil, actionType: ActionType? = nil, quality: Quality? = nil, componentReferences: [CampaignComponentReferenceResponse]? = nil, zoneName: BuildtimeEvaluatableControllerBuildtimeContextString? = nil, data: [String:Entry?]? = nil) {
         self.actionId = actionId
         self.actionType = actionType
         self.quality = quality
