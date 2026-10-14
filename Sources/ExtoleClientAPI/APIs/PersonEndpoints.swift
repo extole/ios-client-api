@@ -9,65 +9,57 @@ import Foundation
 import Alamofire
 
 
+
 open class PersonEndpoints {
     /**
-     * enum for parameter scope
+     * enum for parameter scopes
      */
-    public enum Scope_getData: String { 
-        case _public = "PUBLIC"
-        case _private = "PRIVATE"
+    public enum Scopes_getData: String { 
         case client = "CLIENT"
+        case _private = "PRIVATE"
+        case _public = "PUBLIC"
     }
 
     /**
-     Get a list with profile data
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter name: (query) Optional filter for data name (optional)
-     - parameter scope: (query) Optional filter for data scope, one of PUBLIC, PRIVATE (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
+     List person data parameters
+     - parameter personId: (path) Extole person id.      - parameter names: (query) Optional data name filter. Will include data values that match at least one of the names. Will include all data if not provided. (optional)     - parameter scopes: (query) Optional data scope filter. Will include data values that match at least one of the scopes. Will include all data if not provided. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getData(personId: String, name: String? = nil, scope: Scope_getData? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonDataResponse]?,_ error: Error?) -> Void)) {
-        getDataWithRequestBuilder(personId: personId, name: name, scope: scope, offset: offset, limit: limit).execute { (response, error) -> Void in
+    open class func getData(personId: String, names: [String]? = nil, scopes: [String]? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [String:PersonDataV5Response]?,_ error: Error?) -> Void)) {
+        getDataWithRequestBuilder(personId: personId, names: names, scopes: scopes, offset: offset, limit: limit).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
 
 
     /**
-     Get a list with profile data
-     - GET /v4/persons/{person_id}/data
-
+     List person data parameters
+     - GET /v5/persons/{person_id}/data
+     - Returns all data parameters for the specified person, sorted by updated date in descending order. Use query parameters to filter by name or date range. Returns `400 person_not_found` if the person is not accessible.
      - API Key:
-       - type: apiKey access_token (QUERY)
+       - type: apiKey extole_token (QUERY)
        - name: COOKIE
      - API Key:
-       - type: apiKey authorization 
+       - type: apiKey Authorization 
        - name: HEADER
      - API Key:
        - type: apiKey access_token (QUERY)
        - name: QUERY
-     - examples: [{contentType=application/json, example=[ {
-  "scope" : "PUBLIC",
-  "name" : "name",
-  "value" : { }
-}, {
-  "scope" : "PUBLIC",
-  "name" : "name",
-  "value" : { }
-} ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter name: (query) Optional filter for data name (optional)
-     - parameter scope: (query) Optional filter for data scope, one of PUBLIC, PRIVATE (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
+     - examples: [{contentType=application/json, example={
+  "key" : {
+    "scope" : "CLIENT",
+    "name" : "name",
+    "created_date" : "2025-10-24T02:00:00-07:00",
+    "id" : "id",
+    "value" : { }
+  }
+}}]
+     - parameter personId: (path) Extole person id.      - parameter names: (query) Optional data name filter. Will include data values that match at least one of the names. Will include all data if not provided. (optional)     - parameter scopes: (query) Optional data scope filter. Will include data values that match at least one of the scopes. Will include all data if not provided. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
 
-     - returns: RequestBuilder<[PersonDataResponse]> 
+     - returns: RequestBuilder<[String:PersonDataV5Response]> 
      */
-    open class func getDataWithRequestBuilder(personId: String, name: String? = nil, scope: Scope_getData? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonDataResponse]> {
-        var path = "/v4/persons/{person_id}/data"
+    open class func getDataWithRequestBuilder(personId: String, names: [String]? = nil, scopes: [String]? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[String:PersonDataV5Response]> {
+        var path = "/v5/persons/{person_id}/data"
         let personIdPreEscape = "\(personId)"
         let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
@@ -75,150 +67,87 @@ open class PersonEndpoints {
         let parameters: [String:Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "name": name, 
-                        "scope": scope?.rawValue, 
+                        "names": names, 
+                        "scopes": scopes, 
                         "offset": offset?.encodeToJSON(), 
                         "limit": limit?.encodeToJSON()
         ])
 
-
-        let requestBuilder: RequestBuilder<[PersonDataResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<[String:PersonDataV5Response]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
     }
-    /**
-     Get a list with journeys
 
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter campaignId: (query) Optional campaign id filter. (optional)
-     - parameter programLabel: (query) Optional program label filter. (optional)
-     - parameter container: (query) Optional container filter, defaults to production container. Pass \&quot;*\&quot; to include steps for all containers (optional)
-     - parameter type: (query) Optional journey type filter, one of friend or advocate. (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
+    /**
+     List person journeys
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter ids: (query) Optional journey ids filter. Will include journeys that match at least one of the ids. (optional)     - parameter names: (query) Optional journey names filter. Will include journeys that match at least one of the names. (optional)     - parameter programs: (query) Optional program label filter. Will include journeys that match at least one of the programs. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include journeys that match at least one of the campaign ids. (optional)     - parameter containers: (query) Optional container filter, defaults to all containers. Will include journeys that match at least one of the containers. (optional)     - parameter dataKeys: (query) Optional filter for existence of specific data keys with non-empty values. Will include journeys that have at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include journeys that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)     - parameter keyNames: (query) Optional key names filter. Will include journeys, whose key matches at least one of the key names. (optional)     - parameter keyValues: (query) Optional key values filter. Will include journeys that have one of the specified keys. Valid format is name:value. (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func getJourneys(personId: String, campaignId: String? = nil, programLabel: String? = nil, container: String? = nil, type: String? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonJourneyResponse]?,_ error: Error?) -> Void)) {
-        getJourneysWithRequestBuilder(personId: personId, campaignId: campaignId, programLabel: programLabel, container: container, type: type, offset: offset, limit: limit).execute { (response, error) -> Void in
+    open class func getJourneys(personId: String, ids: [String]? = nil, names: [String]? = nil, programs: [String]? = nil, campaignIds: [String]? = nil, containers: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, offset: Int? = nil, limit: Int? = nil, keyNames: [String]? = nil, keyValues: [String]? = nil, completion: @escaping ((_ data: [PersonJourneyV5Response]?,_ error: Error?) -> Void)) {
+        getJourneysWithRequestBuilder(personId: personId, ids: ids, names: names, programs: programs, campaignIds: campaignIds, containers: containers, dataKeys: dataKeys, dataValues: dataValues, offset: offset, limit: limit, keyNames: keyNames, keyValues: keyValues).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
 
 
     /**
-     Get a list with journeys
-     - GET /v4/persons/{person_id}/journeys
-
+     List person journeys
+     - GET /v5/persons/{person_id}/journeys
+     - Returns campaign journeys for the specified person, sorted by start date in descending order. A journey represents a person's participation lifecycle in a specific campaign (e.g. share, refer-a-friend, purchase).
      - API Key:
-       - type: apiKey access_token (QUERY)
+       - type: apiKey extole_token (QUERY)
        - name: COOKIE
      - API Key:
-       - type: apiKey authorization 
+       - type: apiKey Authorization 
        - name: HEADER
      - API Key:
        - type: apiKey access_token (QUERY)
        - name: QUERY
      - examples: [{contentType=application/json, example=[ {
   "container" : "container",
-  "entry_source" : "entry_source",
-  "entry_share_id" : "entry_share_id",
-  "entry_referral_source" : "entry_referral_source",
-  "data" : [ {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  }, {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  } ],
-  "entry_zone" : "entry_zone",
-  "last_promotable_code" : "last_promotable_code",
-  "last_advocate_code" : "last_advocate_code",
-  "entry_reason" : "entry_reason",
-  "last_advocate_partner_id" : "last_advocate_partner_id",
-  "last_consumer_event_id" : "last_consumer_event_id",
-  "entry_profile_id" : "entry_profile_id",
-  "last_referral_reason" : "last_referral_reason",
+  "data" : {
+    "key" : {
+      "scope" : "CLIENT",
+      "name" : "name",
+      "id" : "id",
+      "value" : { }
+    }
+  },
+  "name" : "name",
+  "created_date" : "2025-10-24T02:00:00-07:00",
   "id" : "id",
-  "entry_coupon_code" : "entry_coupon_code",
-  "journey_type" : "journey_type",
+  "program" : "program",
   "campaign_id" : "campaign_id",
-  "last_profile_id" : "last_profile_id",
-  "last_coupon_code" : "last_coupon_code",
-  "entry_promotable_code" : "entry_promotable_code",
-  "entry_consumer_event_id" : "entry_consumer_event_id",
-  "last_referral_source" : "last_referral_source",
-  "last_channel" : "last_channel",
-  "last_share_id" : "last_share_id",
-  "last_source" : "last_source",
-  "entry_shareable_id" : "entry_shareable_id",
-  "entry_referral_reason" : "entry_referral_reason",
-  "entry_advocate_partner_id" : "entry_advocate_partner_id",
-  "last_zone" : "last_zone",
-  "entry_advocate_code" : "entry_advocate_code",
-  "entry_label" : "entry_label",
-  "entry_channel" : "entry_channel",
-  "last_shareable_id" : "last_shareable_id",
-  "created_date" : "2000-01-23T04:56:07.000+00:00",
-  "updated_date" : "2000-01-23T04:56:07.000+00:00"
+  "key" : {
+    "name" : "name",
+    "value" : "value"
+  }
 }, {
   "container" : "container",
-  "entry_source" : "entry_source",
-  "entry_share_id" : "entry_share_id",
-  "entry_referral_source" : "entry_referral_source",
-  "data" : [ {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  }, {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  } ],
-  "entry_zone" : "entry_zone",
-  "last_promotable_code" : "last_promotable_code",
-  "last_advocate_code" : "last_advocate_code",
-  "entry_reason" : "entry_reason",
-  "last_advocate_partner_id" : "last_advocate_partner_id",
-  "last_consumer_event_id" : "last_consumer_event_id",
-  "entry_profile_id" : "entry_profile_id",
-  "last_referral_reason" : "last_referral_reason",
+  "data" : {
+    "key" : {
+      "scope" : "CLIENT",
+      "name" : "name",
+      "id" : "id",
+      "value" : { }
+    }
+  },
+  "name" : "name",
+  "created_date" : "2025-10-24T02:00:00-07:00",
   "id" : "id",
-  "entry_coupon_code" : "entry_coupon_code",
-  "journey_type" : "journey_type",
+  "program" : "program",
   "campaign_id" : "campaign_id",
-  "last_profile_id" : "last_profile_id",
-  "last_coupon_code" : "last_coupon_code",
-  "entry_promotable_code" : "entry_promotable_code",
-  "entry_consumer_event_id" : "entry_consumer_event_id",
-  "last_referral_source" : "last_referral_source",
-  "last_channel" : "last_channel",
-  "last_share_id" : "last_share_id",
-  "last_source" : "last_source",
-  "entry_shareable_id" : "entry_shareable_id",
-  "entry_referral_reason" : "entry_referral_reason",
-  "entry_advocate_partner_id" : "entry_advocate_partner_id",
-  "last_zone" : "last_zone",
-  "entry_advocate_code" : "entry_advocate_code",
-  "entry_label" : "entry_label",
-  "entry_channel" : "entry_channel",
-  "last_shareable_id" : "last_shareable_id",
-  "created_date" : "2000-01-23T04:56:07.000+00:00",
-  "updated_date" : "2000-01-23T04:56:07.000+00:00"
+  "key" : {
+    "name" : "name",
+    "value" : "value"
+  }
 } ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter campaignId: (query) Optional campaign id filter. (optional)
-     - parameter programLabel: (query) Optional program label filter. (optional)
-     - parameter container: (query) Optional container filter, defaults to production container. Pass \&quot;*\&quot; to include steps for all containers (optional)
-     - parameter type: (query) Optional journey type filter, one of friend or advocate. (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter ids: (query) Optional journey ids filter. Will include journeys that match at least one of the ids. (optional)     - parameter names: (query) Optional journey names filter. Will include journeys that match at least one of the names. (optional)     - parameter programs: (query) Optional program label filter. Will include journeys that match at least one of the programs. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include journeys that match at least one of the campaign ids. (optional)     - parameter containers: (query) Optional container filter, defaults to all containers. Will include journeys that match at least one of the containers. (optional)     - parameter dataKeys: (query) Optional filter for existence of specific data keys with non-empty values. Will include journeys that have at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include journeys that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)     - parameter keyNames: (query) Optional key names filter. Will include journeys, whose key matches at least one of the key names. (optional)     - parameter keyValues: (query) Optional key values filter. Will include journeys that have one of the specified keys. Valid format is name:value. (optional)
 
-     - returns: RequestBuilder<[PersonJourneyResponse]> 
+     - returns: RequestBuilder<[PersonJourneyV5Response]> 
      */
-    open class func getJourneysWithRequestBuilder(personId: String, campaignId: String? = nil, programLabel: String? = nil, container: String? = nil, type: String? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonJourneyResponse]> {
-        var path = "/v4/persons/{person_id}/journeys"
+    open class func getJourneysWithRequestBuilder(personId: String, ids: [String]? = nil, names: [String]? = nil, programs: [String]? = nil, campaignIds: [String]? = nil, containers: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, offset: Int? = nil, limit: Int? = nil, keyNames: [String]? = nil, keyValues: [String]? = nil) -> RequestBuilder<[PersonJourneyV5Response]> {
+        var path = "/v5/persons/{person_id}/journeys"
         let personIdPreEscape = "\(personId)"
         let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
@@ -226,19 +155,804 @@ open class PersonEndpoints {
         let parameters: [String:Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "campaign_id": campaignId, 
-                        "program_label": programLabel, 
-                        "container": container, 
-                        "type": type, 
+                        "ids": ids, 
+                        "names": names, 
+                        "programs": programs, 
+                        "campaign_ids": campaignIds, 
+                        "containers": containers, 
+                        "data_keys": dataKeys, 
+                        "data_values": dataValues, 
+                        "offset": offset?.encodeToJSON(), 
+                        "limit": limit?.encodeToJSON(), 
+                        "key_names": keyNames, 
+                        "key_values": keyValues
+        ])
+
+        let requestBuilder: RequestBuilder<[PersonJourneyV5Response]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
+    /**
+     List person locations
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter countries: (query) Optional countries filter. Will include locations that match at least one of the countries. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getLocations(personId: String, countries: [String]? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonLocationResponse]?,_ error: Error?) -> Void)) {
+        getLocationsWithRequestBuilder(personId: personId, countries: countries, offset: offset, limit: limit).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     List person locations
+     - GET /v5/persons/{person_id}/locations
+     - Returns request context location records for the specified person, sorted by created date in descending order. Locations capture the geographic context (country, region, city) observed at the time of person interactions.
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example=[ {
+  "country" : {
+    "isoCode" : "isoCode",
+    "name" : "name"
+  },
+  "accuracy_radius_km" : 0,
+  "device_id" : "device_id",
+  "city" : {
+    "name" : "name"
+  },
+  "location" : {
+    "createdDate" : "createdDate",
+    "geoIp" : {
+      "zipCode" : "zipCode",
+      "accuracyRadiusKm" : 6,
+      "ipAddress" : "ipAddress",
+      "state" : {
+        "isoCode" : "isoCode",
+        "name" : "name"
+      }
+    },
+    "deviceId" : "deviceId"
+  },
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "ip_address" : "ip_address",
+  "zip_code" : "zip_code"
+}, {
+  "country" : {
+    "isoCode" : "isoCode",
+    "name" : "name"
+  },
+  "accuracy_radius_km" : 0,
+  "device_id" : "device_id",
+  "city" : {
+    "name" : "name"
+  },
+  "location" : {
+    "createdDate" : "createdDate",
+    "geoIp" : {
+      "zipCode" : "zipCode",
+      "accuracyRadiusKm" : 6,
+      "ipAddress" : "ipAddress",
+      "state" : {
+        "isoCode" : "isoCode",
+        "name" : "name"
+      }
+    },
+    "deviceId" : "deviceId"
+  },
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "ip_address" : "ip_address",
+  "zip_code" : "zip_code"
+} ]}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter countries: (query) Optional countries filter. Will include locations that match at least one of the countries. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+
+     - returns: RequestBuilder<[PersonLocationResponse]> 
+     */
+    open class func getLocationsWithRequestBuilder(personId: String, countries: [String]? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonLocationResponse]> {
+        var path = "/v5/persons/{person_id}/locations"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        var url = URLComponents(string: URLString)
+        url?.queryItems = APIHelper.mapValuesToQueryItems([
+                        "countries": countries, 
                         "offset": offset?.encodeToJSON(), 
                         "limit": limit?.encodeToJSON()
         ])
 
-
-        let requestBuilder: RequestBuilder<[PersonJourneyResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+        let requestBuilder: RequestBuilder<[PersonLocationResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
     }
+
+    /**
+     Get a person
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getPerson(personId: String, completion: @escaping ((_ data: PersonV5Response?,_ error: Error?) -> Void)) {
+        getPersonWithRequestBuilder(personId: personId).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     Get a person
+     - GET /v5/persons/{person_id}
+     - Returns the person profile for the specified `person_id`. The response includes the person's current identity key and value, locale settings, and version. Returns `400 person_not_found` if the person does not exist or is not accessible.
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example={
+  "identity_id" : "identity_id",
+  "identity_key_value" : "identity_key_value",
+  "id" : "id",
+  "identity_key" : {
+    "name" : "name"
+  },
+  "locale" : {
+    "last_browser" : "last_browser",
+    "user_specified" : "user_specified"
+  },
+  "version" : "version"
+}}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
+
+     - returns: RequestBuilder<PersonV5Response> 
+     */
+    open class func getPersonWithRequestBuilder(personId: String) -> RequestBuilder<PersonV5Response> {
+        var path = "/v5/persons/{person_id}"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        let url = URLComponents(string: URLString)
+
+
+        let requestBuilder: RequestBuilder<PersonV5Response>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
+    /**
+     * enum for parameter myRoles
+     */
+    public enum MyRoles_getRelationships: String { 
+        case advocate = "ADVOCATE"
+        case friend = "FRIEND"
+    }
+
+    /**
+     List person relationships
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter myRoles: (query) Optional roles filter for the current person in the relationship. Will include journeys that match at least one of the roles. Eligible values are FRIEND, ADVOCATE. (optional)     - parameter containers: (query) Optional container filter, defaults to all containers. Will include relationships that match at least one of the containers. (optional)     - parameter programs: (query) Optional program label filter. Will include relationships that match at least one of the programs. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include relationships that match at least one of the campaign ids. (optional)     - parameter dataKeys: (query) Optional filter for existence of specific data keys with non-empty values. Will include relationships that have at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include relationships that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter excludeAnonymous: (query) Optional flag to exclude relationships with anonymous persons. (optional, default to false)     - parameter includeDuplicateIdentities: (query) Optional flag to return all relationships, not de-duplicate by identity. Default behavior (or when flag is set to false) returns last relationship per person. (optional, default to false)     - parameter includeSelfReferrals: (query) Optional flag to include self referrals. (optional, default to false)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getRelationships(personId: String, myRoles: [String]? = nil, containers: [String]? = nil, programs: [String]? = nil, campaignIds: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, excludeAnonymous: Bool? = nil, includeDuplicateIdentities: Bool? = nil, includeSelfReferrals: Bool? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonRelationshipV5Response]?,_ error: Error?) -> Void)) {
+        getRelationshipsWithRequestBuilder(personId: personId, myRoles: myRoles, containers: containers, programs: programs, campaignIds: campaignIds, dataKeys: dataKeys, dataValues: dataValues, excludeAnonymous: excludeAnonymous, includeDuplicateIdentities: includeDuplicateIdentities, includeSelfReferrals: includeSelfReferrals, offset: offset, limit: limit).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     List person relationships
+     - GET /v5/persons/{person_id}/relationships
+     - Returns the referral relationships for the specified person, showing advocate-friend connections created through campaign participation. Each entry carries the requested person's `my_role` (`ADVOCATE` or `FRIEND`) and the `other_person_id` on the other side, rather than being split into fixed advocate and friend collections.  Each entry also carries `other_person`, resolving that person to this client's `identity_key` and `identity_key_value`, so a whole network can be labelled from one request rather than one request per related person. A relationship always names another person, so `other_person` is always present.  A relationship whose other person was deleted or cannot be found is left out. The `offset` and `limit` apply before it is left out, so a page can hold fewer than `limit` entries.  Relationships are de-duplicated by identity, keeping the most recent one per related person, unless `include_duplicate_identities` is set. When collapsing persons yourself, key on `identity_key_value`, falling back to `other_person_id` when the person has no identity key value yet. Never key on `email`: clients whose identity key is not `email` routinely have many distinct persons sharing an email or having none, so collapsing on email under-reports the network.
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example=[ {
+  "container" : "container",
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "program" : "program",
+  "other_person_id" : "other_person_id",
+  "other_person" : {
+    "identity_key_value" : "identity_key_value",
+    "id" : "id",
+    "identity_key" : {
+      "name" : "name"
+    }
+  },
+  "root_event_id" : "root_event_id",
+  "my_role" : "ADVOCATE",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "id" : "id",
+  "campaign_id" : "campaign_id",
+  "cause_event_id" : "cause_event_id",
+  "person_id" : "person_id"
+}, {
+  "container" : "container",
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "program" : "program",
+  "other_person_id" : "other_person_id",
+  "other_person" : {
+    "identity_key_value" : "identity_key_value",
+    "id" : "id",
+    "identity_key" : {
+      "name" : "name"
+    }
+  },
+  "root_event_id" : "root_event_id",
+  "my_role" : "ADVOCATE",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "id" : "id",
+  "campaign_id" : "campaign_id",
+  "cause_event_id" : "cause_event_id",
+  "person_id" : "person_id"
+} ]}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter myRoles: (query) Optional roles filter for the current person in the relationship. Will include journeys that match at least one of the roles. Eligible values are FRIEND, ADVOCATE. (optional)     - parameter containers: (query) Optional container filter, defaults to all containers. Will include relationships that match at least one of the containers. (optional)     - parameter programs: (query) Optional program label filter. Will include relationships that match at least one of the programs. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include relationships that match at least one of the campaign ids. (optional)     - parameter dataKeys: (query) Optional filter for existence of specific data keys with non-empty values. Will include relationships that have at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include relationships that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter excludeAnonymous: (query) Optional flag to exclude relationships with anonymous persons. (optional, default to false)     - parameter includeDuplicateIdentities: (query) Optional flag to return all relationships, not de-duplicate by identity. Default behavior (or when flag is set to false) returns last relationship per person. (optional, default to false)     - parameter includeSelfReferrals: (query) Optional flag to include self referrals. (optional, default to false)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+
+     - returns: RequestBuilder<[PersonRelationshipV5Response]> 
+     */
+    open class func getRelationshipsWithRequestBuilder(personId: String, myRoles: [String]? = nil, containers: [String]? = nil, programs: [String]? = nil, campaignIds: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, excludeAnonymous: Bool? = nil, includeDuplicateIdentities: Bool? = nil, includeSelfReferrals: Bool? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonRelationshipV5Response]> {
+        var path = "/v5/persons/{person_id}/relationships"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        var url = URLComponents(string: URLString)
+        url?.queryItems = APIHelper.mapValuesToQueryItems([
+                        "my_roles": myRoles, 
+                        "containers": containers, 
+                        "programs": programs, 
+                        "campaign_ids": campaignIds, 
+                        "data_keys": dataKeys, 
+                        "data_values": dataValues, 
+                        "exclude_anonymous": excludeAnonymous, 
+                        "include_duplicate_identities": includeDuplicateIdentities, 
+                        "include_self_referrals": includeSelfReferrals, 
+                        "offset": offset?.encodeToJSON(), 
+                        "limit": limit?.encodeToJSON()
+        ])
+
+        let requestBuilder: RequestBuilder<[PersonRelationshipV5Response]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
+    /**
+     * enum for parameter rewardTypes
+     */
+    public enum RewardTypes_getRewards: String { 
+        case customReward = "CUSTOM_REWARD"
+        case manualCoupon = "MANUAL_COUPON"
+        case salesforceCoupon = "SALESFORCE_COUPON"
+        case tangoV2 = "TANGO_V2"
+    }
+
+    /**
+     * enum for parameter rewardStates
+     */
+    public enum RewardStates_getRewards: String { 
+        case canceled = "CANCELED"
+        case earned = "EARNED"
+        case expired = "EXPIRED"
+        case failed = "FAILED"
+        case fulfilled = "FULFILLED"
+        case redeemed = "REDEEMED"
+        case revoked = "REVOKED"
+        case sent = "SENT"
+    }
+
+    /**
+     List person rewards
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter campaignIds: (query) Optional campaign id filter. Will include rewards that match at least one of the campaign ids. (optional)     - parameter programs: (query) Optional program label filter. Will include rewards that match at least one of the programs. (optional)     - parameter containers: (query) Optional containers filter. Will include rewards for all containers if not specified or match at least one of the specified containers. (optional)     - parameter dataKeys: (query) Optional data keys filter. Will include rewards that match at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include rewards that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter rewardTypes: (query) Optional reward types filter. Will include rewards that match at least one of the reward types. (optional)     - parameter rewardStates: (query) Optional reward states filter. Will include rewards that match at least one of the reward states. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)     - parameter journeyNames: (query) Optional journey names filter. Will include rewards that match at least one of the journey names. (optional)     - parameter journeyKeyNames: (query) Optional journey key names filter. Will include rewards, whose journey key matches one of the journey key names. (optional)     - parameter journeyKeyValues: (query) Optional journey key values filter. Will include rewards that have one of the specified journey keys. Valid format is name:value. (optional)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getRewards(personId: String, campaignIds: [String]? = nil, programs: [String]? = nil, containers: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, rewardTypes: [String]? = nil, rewardStates: [String]? = nil, offset: Int? = nil, limit: Int? = nil, journeyNames: [String]? = nil, journeyKeyNames: [String]? = nil, journeyKeyValues: [String]? = nil, completion: @escaping ((_ data: [PersonRewardV5Response]?,_ error: Error?) -> Void)) {
+        getRewardsWithRequestBuilder(personId: personId, campaignIds: campaignIds, programs: programs, containers: containers, dataKeys: dataKeys, dataValues: dataValues, rewardTypes: rewardTypes, rewardStates: rewardStates, offset: offset, limit: limit, journeyNames: journeyNames, journeyKeyNames: journeyKeyNames, journeyKeyValues: journeyKeyValues).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     List person rewards
+     - GET /v5/persons/{person_id}/rewards
+     - Returns all rewards for the specified person, sorted by created date in descending order. Supports filtering by state, supplier type, and date range.
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example=[ {
+  "container" : "container",
+  "reward_supplier_id" : "reward_supplier_id",
+  "instructions" : "instructions",
+  "code" : "code",
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "link" : "https://www.extole.com",
+  "face_value_type" : "AUD",
+  "program" : "program",
+  "journey_key" : {
+    "name" : "name",
+    "value" : "value"
+  },
+  "id" : "id",
+  "state" : "CANCELED",
+  "campaign_id" : "campaign_id",
+  "value_of_rewarded_event" : 6.027456183070403,
+  "image" : "https://www.extole.com/wp-content/uploads/2023/07/Extole-logo.svg",
+  "partner_reward_id" : "partner_reward_id",
+  "sandbox" : "sandbox",
+  "journey_name" : "journey_name",
+  "face_value" : 0.8008281904610115,
+  "tags" : [ "tags", "tags" ],
+  "partner_reward_supplier_id" : "partner_reward_supplier_id",
+  "name" : "name",
+  "created_date" : "2025-10-24T02:00:00-07:00"
+}, {
+  "container" : "container",
+  "reward_supplier_id" : "reward_supplier_id",
+  "instructions" : "instructions",
+  "code" : "code",
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "link" : "https://www.extole.com",
+  "face_value_type" : "AUD",
+  "program" : "program",
+  "journey_key" : {
+    "name" : "name",
+    "value" : "value"
+  },
+  "id" : "id",
+  "state" : "CANCELED",
+  "campaign_id" : "campaign_id",
+  "value_of_rewarded_event" : 6.027456183070403,
+  "image" : "https://www.extole.com/wp-content/uploads/2023/07/Extole-logo.svg",
+  "partner_reward_id" : "partner_reward_id",
+  "sandbox" : "sandbox",
+  "journey_name" : "journey_name",
+  "face_value" : 0.8008281904610115,
+  "tags" : [ "tags", "tags" ],
+  "partner_reward_supplier_id" : "partner_reward_supplier_id",
+  "name" : "name",
+  "created_date" : "2025-10-24T02:00:00-07:00"
+} ]}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter campaignIds: (query) Optional campaign id filter. Will include rewards that match at least one of the campaign ids. (optional)     - parameter programs: (query) Optional program label filter. Will include rewards that match at least one of the programs. (optional)     - parameter containers: (query) Optional containers filter. Will include rewards for all containers if not specified or match at least one of the specified containers. (optional)     - parameter dataKeys: (query) Optional data keys filter. Will include rewards that match at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include rewards that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter rewardTypes: (query) Optional reward types filter. Will include rewards that match at least one of the reward types. (optional)     - parameter rewardStates: (query) Optional reward states filter. Will include rewards that match at least one of the reward states. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)     - parameter journeyNames: (query) Optional journey names filter. Will include rewards that match at least one of the journey names. (optional)     - parameter journeyKeyNames: (query) Optional journey key names filter. Will include rewards, whose journey key matches one of the journey key names. (optional)     - parameter journeyKeyValues: (query) Optional journey key values filter. Will include rewards that have one of the specified journey keys. Valid format is name:value. (optional)
+
+     - returns: RequestBuilder<[PersonRewardV5Response]> 
+     */
+    open class func getRewardsWithRequestBuilder(personId: String, campaignIds: [String]? = nil, programs: [String]? = nil, containers: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, rewardTypes: [String]? = nil, rewardStates: [String]? = nil, offset: Int? = nil, limit: Int? = nil, journeyNames: [String]? = nil, journeyKeyNames: [String]? = nil, journeyKeyValues: [String]? = nil) -> RequestBuilder<[PersonRewardV5Response]> {
+        var path = "/v5/persons/{person_id}/rewards"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        var url = URLComponents(string: URLString)
+        url?.queryItems = APIHelper.mapValuesToQueryItems([
+                        "campaign_ids": campaignIds, 
+                        "programs": programs, 
+                        "containers": containers, 
+                        "data_keys": dataKeys, 
+                        "data_values": dataValues, 
+                        "reward_types": rewardTypes, 
+                        "reward_states": rewardStates, 
+                        "offset": offset?.encodeToJSON(), 
+                        "limit": limit?.encodeToJSON(), 
+                        "journey_names": journeyNames, 
+                        "journey_key_names": journeyKeyNames, 
+                        "journey_key_values": journeyKeyValues
+        ])
+
+        let requestBuilder: RequestBuilder<[PersonRewardV5Response]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
+    /**
+     Get a person shareable
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter code: (path) Shareable id parameter 
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getShareableByCode(personId: String, code: String, completion: @escaping ((_ data: PersonShareableV5Response?,_ error: Error?) -> Void)) {
+        getShareableByCodeWithRequestBuilder(personId: personId, code: code).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     Get a person shareable
+     - GET /v5/persons/{person_id}/shareables/{code}
+     - Returns the shareable for the specified person identified by its share code. A shareable is a unique share link or code that allows a person to invite friends to participate in a referral campaign.
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example={
+  "code" : "code",
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "link" : "link",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "label" : "label",
+  "content" : {
+    "partner_content_id" : "partner_content_id",
+    "image_url" : "image_url",
+    "description" : "description",
+    "title" : "title",
+    "url" : "url"
+  },
+  "key" : "key"
+}}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter code: (path) Shareable id parameter 
+
+     - returns: RequestBuilder<PersonShareableV5Response> 
+     */
+    open class func getShareableByCodeWithRequestBuilder(personId: String, code: String) -> RequestBuilder<PersonShareableV5Response> {
+        var path = "/v5/persons/{person_id}/shareables/{code}"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let codePreEscape = "\(code)"
+        let codePostEscape = codePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{code}", with: codePostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        let url = URLComponents(string: URLString)
+
+
+        let requestBuilder: RequestBuilder<PersonShareableV5Response>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
+    /**
+     List person shareables
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter labels: (query) Optional label filter. Will include shareables that match at least one of the labels. (optional)     - parameter dataKeys: (query) Optional data keys filter. Will include shareables that match at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include shareables that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getShareables(personId: String, labels: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonShareableV5Response]?,_ error: Error?) -> Void)) {
+        getShareablesWithRequestBuilder(personId: personId, labels: labels, dataKeys: dataKeys, dataValues: dataValues, offset: offset, limit: limit).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     List person shareables
+     - GET /v5/persons/{person_id}/shareables
+     - Returns all shareables for the specified person, sorted by created date in descending order. Each shareable is a unique referral link or code associated with a campaign.
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example=[ {
+  "code" : "code",
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "link" : "link",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "label" : "label",
+  "content" : {
+    "partner_content_id" : "partner_content_id",
+    "image_url" : "image_url",
+    "description" : "description",
+    "title" : "title",
+    "url" : "url"
+  },
+  "key" : "key"
+}, {
+  "code" : "code",
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "link" : "link",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "label" : "label",
+  "content" : {
+    "partner_content_id" : "partner_content_id",
+    "image_url" : "image_url",
+    "description" : "description",
+    "title" : "title",
+    "url" : "url"
+  },
+  "key" : "key"
+} ]}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter labels: (query) Optional label filter. Will include shareables that match at least one of the labels. (optional)     - parameter dataKeys: (query) Optional data keys filter. Will include shareables that match at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include shareables that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+
+     - returns: RequestBuilder<[PersonShareableV5Response]> 
+     */
+    open class func getShareablesWithRequestBuilder(personId: String, labels: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonShareableV5Response]> {
+        var path = "/v5/persons/{person_id}/shareables"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        var url = URLComponents(string: URLString)
+        url?.queryItems = APIHelper.mapValuesToQueryItems([
+                        "labels": labels, 
+                        "data_keys": dataKeys, 
+                        "data_values": dataValues, 
+                        "offset": offset?.encodeToJSON(), 
+                        "limit": limit?.encodeToJSON()
+        ])
+
+        let requestBuilder: RequestBuilder<[PersonShareableV5Response]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
+    /**
+     List person shares
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter programs: (query) Optional program filter. Will include shares that match at least one of the programs. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include shares that match at least one of the campaign ids. (optional)     - parameter partnerIds: (query) Optional program label filter. Will include shares that match at least one of the programs. (optional)     - parameter dataKeys: (query) Optional data keys filter. Will include shares that match at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include shares that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getShares(personId: String, programs: [String]? = nil, campaignIds: [String]? = nil, partnerIds: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonShareV5Response]?,_ error: Error?) -> Void)) {
+        getSharesWithRequestBuilder(personId: personId, programs: programs, campaignIds: campaignIds, partnerIds: partnerIds, dataKeys: dataKeys, dataValues: dataValues, offset: offset, limit: limit).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     List person shares
+     - GET /v5/persons/{person_id}/shares
+     - Returns all share events for the specified person, sorted by created date in descending order. A share is recorded each time the person distributes a shareable link via a channel (social, email, etc.).
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example=[ {
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "subject" : "subject",
+  "channel" : "channel",
+  "link" : "link",
+  "program" : "program",
+  "message" : "message",
+  "other_person_id" : "other_person_id",
+  "shareable_code" : "shareable_code",
+  "partner_id" : {
+    "name" : "name",
+    "value" : "value"
+  },
+  "recipient" : "recipient",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "id" : "id",
+  "campaign_id" : "campaign_id"
+}, {
+  "data" : {
+    "key" : {
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "subject" : "subject",
+  "channel" : "channel",
+  "link" : "link",
+  "program" : "program",
+  "message" : "message",
+  "other_person_id" : "other_person_id",
+  "shareable_code" : "shareable_code",
+  "partner_id" : {
+    "name" : "name",
+    "value" : "value"
+  },
+  "recipient" : "recipient",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "id" : "id",
+  "campaign_id" : "campaign_id"
+} ]}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter programs: (query) Optional program filter. Will include shares that match at least one of the programs. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include shares that match at least one of the campaign ids. (optional)     - parameter partnerIds: (query) Optional program label filter. Will include shares that match at least one of the programs. (optional)     - parameter dataKeys: (query) Optional data keys filter. Will include shares that match at least one of the data keys. (optional)     - parameter dataValues: (query) Optional filter for existence of specific data values. Will include shares that have at least one of the specified data name-value pair. Valid format is name:value. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 100. (optional, default to 100)
+
+     - returns: RequestBuilder<[PersonShareV5Response]> 
+     */
+    open class func getSharesWithRequestBuilder(personId: String, programs: [String]? = nil, campaignIds: [String]? = nil, partnerIds: [String]? = nil, dataKeys: [String]? = nil, dataValues: [String]? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonShareV5Response]> {
+        var path = "/v5/persons/{person_id}/shares"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        var url = URLComponents(string: URLString)
+        url?.queryItems = APIHelper.mapValuesToQueryItems([
+                        "programs": programs, 
+                        "campaign_ids": campaignIds, 
+                        "partner_ids": partnerIds, 
+                        "data_keys": dataKeys, 
+                        "data_values": dataValues, 
+                        "offset": offset?.encodeToJSON(), 
+                        "limit": limit?.encodeToJSON()
+        ])
+
+        let requestBuilder: RequestBuilder<[PersonShareV5Response]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
+    /**
+     List person steps
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter names: (query) Optional step name filter. Will include steps that match at least one of the names. (optional)     - parameter containers: (query) Optional container filter, defaults to all containers. Will include steps that match at least one of the containers. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include steps that match at least one of the campaign ids. (optional)     - parameter programs: (query) Optional program label filter. Will include steps that match at least one of the programs. (optional)     - parameter journeyNames: (query) Optional journey names filter. Will include steps that match at least one of the journey names. (optional)     - parameter isPrimary: (query) Optional filter for primary steps. Defaults to all steps. (optional)     - parameter dataKeys: (query) Optional filter for existence of a specific data keys with non-empty values. Will include steps that have at least one of the data keys. (optional)     - parameter eventIds: (query) Optional event IDs filter. Will include steps that match at least one of the event IDs. (optional)     - parameter causeEventIds: (query) Optional cause event IDs filter. Will include steps that match at least one of the cause event IDs. (optional)     - parameter rootEventIds: (query) Optional root event IDs filter. Will include steps that match at least one of the root event IDs. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 20. (optional, default to 20)     - parameter journeyKeyNames: (query) Optional journey key names filter. Will include steps, whose journey key matches one of the journey key names. (optional)     - parameter journeyKeyValues: (query) Optional journey key values filter. Will include steps that have one of the specified journey keys. Valid format is name:value. (optional)
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    open class func getSteps(personId: String, names: [String]? = nil, containers: [String]? = nil, campaignIds: [String]? = nil, programs: [String]? = nil, journeyNames: [String]? = nil, isPrimary: Bool? = nil, dataKeys: [String]? = nil, eventIds: [String]? = nil, causeEventIds: [String]? = nil, rootEventIds: [String]? = nil, offset: Int? = nil, limit: Int? = nil, journeyKeyNames: [String]? = nil, journeyKeyValues: [String]? = nil, completion: @escaping ((_ data: [PersonStepV5Response]?,_ error: Error?) -> Void)) {
+        getStepsWithRequestBuilder(personId: personId, names: names, containers: containers, campaignIds: campaignIds, programs: programs, journeyNames: journeyNames, isPrimary: isPrimary, dataKeys: dataKeys, eventIds: eventIds, causeEventIds: causeEventIds, rootEventIds: rootEventIds, offset: offset, limit: limit, journeyKeyNames: journeyKeyNames, journeyKeyValues: journeyKeyValues).execute { (response, error) -> Void in
+            completion(response?.body, error)
+        }
+    }
+
+
+    /**
+     List person steps
+     - GET /v5/persons/{person_id}/steps
+     - Returns campaign flow steps for the specified person, sorted by event date in descending order. Steps represent discrete tracked actions (e.g. conversion, share, reward earned) within the person's journey.
+     - API Key:
+       - type: apiKey extole_token (QUERY)
+       - name: COOKIE
+     - API Key:
+       - type: apiKey Authorization 
+       - name: HEADER
+     - API Key:
+       - type: apiKey access_token (QUERY)
+       - name: QUERY
+     - examples: [{contentType=application/json, example=[ {
+  "container" : "container",
+  "data" : {
+    "key" : {
+      "key_type" : "NONE",
+      "scope" : "CLIENT",
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "is_primary" : true,
+  "journey_name" : "journey_name",
+  "program" : "program",
+  "quality" : "HIGH",
+  "event_id" : "event_id",
+  "journey_key" : {
+    "name" : "name",
+    "value" : "value"
+  },
+  "root_event_id" : "root_event_id",
+  "scope" : "CLIENT",
+  "name" : "name",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "id" : "id",
+  "campaign_id" : "campaign_id",
+  "cause_event_id" : "cause_event_id"
+}, {
+  "container" : "container",
+  "data" : {
+    "key" : {
+      "key_type" : "NONE",
+      "scope" : "CLIENT",
+      "name" : "name",
+      "value" : { }
+    }
+  },
+  "is_primary" : true,
+  "journey_name" : "journey_name",
+  "program" : "program",
+  "quality" : "HIGH",
+  "event_id" : "event_id",
+  "journey_key" : {
+    "name" : "name",
+    "value" : "value"
+  },
+  "root_event_id" : "root_event_id",
+  "scope" : "CLIENT",
+  "name" : "name",
+  "created_date" : "2025-10-24T02:00:00-07:00",
+  "id" : "id",
+  "campaign_id" : "campaign_id",
+  "cause_event_id" : "cause_event_id"
+} ]}]
+     - parameter personId: (path) The Extole unique profile identifier of this user at Extole.      - parameter names: (query) Optional step name filter. Will include steps that match at least one of the names. (optional)     - parameter containers: (query) Optional container filter, defaults to all containers. Will include steps that match at least one of the containers. (optional)     - parameter campaignIds: (query) Optional campaign id filter. Will include steps that match at least one of the campaign ids. (optional)     - parameter programs: (query) Optional program label filter. Will include steps that match at least one of the programs. (optional)     - parameter journeyNames: (query) Optional journey names filter. Will include steps that match at least one of the journey names. (optional)     - parameter isPrimary: (query) Optional filter for primary steps. Defaults to all steps. (optional)     - parameter dataKeys: (query) Optional filter for existence of a specific data keys with non-empty values. Will include steps that have at least one of the data keys. (optional)     - parameter eventIds: (query) Optional event IDs filter. Will include steps that match at least one of the event IDs. (optional)     - parameter causeEventIds: (query) Optional cause event IDs filter. Will include steps that match at least one of the cause event IDs. (optional)     - parameter rootEventIds: (query) Optional root event IDs filter. Will include steps that match at least one of the root event IDs. (optional)     - parameter offset: (query) Optional offset filter, defaults to 0. (optional, default to 0)     - parameter limit: (query) Optional limit filter, defaults to 20. (optional, default to 20)     - parameter journeyKeyNames: (query) Optional journey key names filter. Will include steps, whose journey key matches one of the journey key names. (optional)     - parameter journeyKeyValues: (query) Optional journey key values filter. Will include steps that have one of the specified journey keys. Valid format is name:value. (optional)
+
+     - returns: RequestBuilder<[PersonStepV5Response]> 
+     */
+    open class func getStepsWithRequestBuilder(personId: String, names: [String]? = nil, containers: [String]? = nil, campaignIds: [String]? = nil, programs: [String]? = nil, journeyNames: [String]? = nil, isPrimary: Bool? = nil, dataKeys: [String]? = nil, eventIds: [String]? = nil, causeEventIds: [String]? = nil, rootEventIds: [String]? = nil, offset: Int? = nil, limit: Int? = nil, journeyKeyNames: [String]? = nil, journeyKeyValues: [String]? = nil) -> RequestBuilder<[PersonStepV5Response]> {
+        var path = "/v5/persons/{person_id}/steps"
+        let personIdPreEscape = "\(personId)"
+        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
+        let URLString = ExtoleClientAPI.basePath + path
+        let parameters: [String:Any]? = nil
+        var url = URLComponents(string: URLString)
+        url?.queryItems = APIHelper.mapValuesToQueryItems([
+                        "names": names, 
+                        "containers": containers, 
+                        "campaign_ids": campaignIds, 
+                        "programs": programs, 
+                        "journey_names": journeyNames, 
+                        "is_primary": isPrimary, 
+                        "data_keys": dataKeys, 
+                        "event_ids": eventIds, 
+                        "cause_event_ids": causeEventIds, 
+                        "root_event_ids": rootEventIds, 
+                        "offset": offset?.encodeToJSON(), 
+                        "limit": limit?.encodeToJSON(), 
+                        "journey_key_names": journeyKeyNames, 
+                        "journey_key_values": journeyKeyValues
+        ])
+
+        let requestBuilder: RequestBuilder<[PersonStepV5Response]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
+
+        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
+    }
+
     /**
      Gets calculated statistics for the network of a Person
 
@@ -256,7 +970,7 @@ open class PersonEndpoints {
 
     /**
      Gets calculated statistics for the network of a Person
-     - GET /v4/persons/{person_id}/network-stats
+     - GET /v5/persons/{person_id}/network-stats
      - 
 
      - API Key:
@@ -282,7 +996,7 @@ open class PersonEndpoints {
      - returns: RequestBuilder<PersonNetworkStatsResponse> 
      */
     open class func getNetworkStatsWithRequestBuilder(personId: String, container: String? = nil, excludeAnonymous: Bool? = nil) -> RequestBuilder<PersonNetworkStatsResponse> {
-        var path = "/v4/persons/{person_id}/network-stats"
+        var path = "/v5/persons/{person_id}/network-stats"
         let personIdPreEscape = "\(personId)"
         let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
@@ -299,639 +1013,7 @@ open class PersonEndpoints {
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
     }
-    /**
-     Gets Details for a Person
 
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getPerson(personId: String, completion: @escaping ((_ data: PersonResponse?,_ error: Error?) -> Void)) {
-        getPersonWithRequestBuilder(personId: personId).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Gets Details for a Person
-     - GET /v4/persons/{person_id}
-     - 
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example={
-  "picture_url" : "picture_url",
-  "blocked" : true,
-  "request_contexts" : [ {
-    "country" : {
-      "name" : "name",
-      "iso_code" : "iso_code"
-    },
-    "device_id" : "device_id",
-    "city" : {
-      "name" : "name"
-    },
-    "ip" : "ip",
-    "created_at" : "2000-01-23T04:56:07.000+00:00",
-    "location" : {
-      "latitude" : 0.8008281904610115,
-      "longitude" : 6.027456183070403
-    },
-    "state" : {
-      "name" : "name",
-      "iso_code" : "iso_code"
-    }
-  }, {
-    "country" : {
-      "name" : "name",
-      "iso_code" : "iso_code"
-    },
-    "device_id" : "device_id",
-    "city" : {
-      "name" : "name"
-    },
-    "ip" : "ip",
-    "created_at" : "2000-01-23T04:56:07.000+00:00",
-    "location" : {
-      "latitude" : 0.8008281904610115,
-      "longitude" : 6.027456183070403
-    },
-    "state" : {
-      "name" : "name",
-      "iso_code" : "iso_code"
-    }
-  } ],
-  "last_name" : "last_name",
-  "partner_user_id" : "partner_user_id",
-  "id" : "id",
-  "locale" : {
-    "last_browser" : "last_browser",
-    "user_specified" : "user_specified"
-  },
-  "first_name" : "first_name",
-  "version" : "version",
-  "email" : "email"
-}}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-
-     - returns: RequestBuilder<PersonResponse> 
-     */
-    open class func getPersonWithRequestBuilder(personId: String) -> RequestBuilder<PersonResponse> {
-        var path = "/v4/persons/{person_id}"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        let url = URLComponents(string: URLString)
-
-
-        let requestBuilder: RequestBuilder<PersonResponse>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
-    /**
-     * enum for parameter role
-     */
-    public enum Role_getRelationships: String { 
-        case friend = "FRIEND"
-        case advocate = "ADVOCATE"
-    }
-
-    /**
-     Get a list with relationships
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter container: (query)  (optional)
-     - parameter role: (query)  (optional)
-     - parameter excludeAnonymous: (query)  (optional)
-     - parameter includeDuplicateIdentities: (query)  (optional)
-     - parameter includeSelfReferrals: (query)  (optional)
-     - parameter offset: (query)  (optional)
-     - parameter limit: (query)  (optional)
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getRelationships(personId: String, container: String? = nil, role: Role_getRelationships? = nil, excludeAnonymous: Bool? = nil, includeDuplicateIdentities: Bool? = nil, includeSelfReferrals: Bool? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonRelationshipResponse]?,_ error: Error?) -> Void)) {
-        getRelationshipsWithRequestBuilder(personId: personId, container: container, role: role, excludeAnonymous: excludeAnonymous, includeDuplicateIdentities: includeDuplicateIdentities, includeSelfReferrals: includeSelfReferrals, offset: offset, limit: limit).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Get a list with relationships
-     - GET /v4/persons/{person_id}/relationships
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example=[ {
-  "container" : "container",
-  "other_person_id" : "other_person_id",
-  "reason" : "reason",
-  "role" : "role",
-  "updated_at" : "2000-01-23T04:56:07.000+00:00",
-  "data" : {
-    "key" : "data"
-  },
-  "is_parent" : true
-}, {
-  "container" : "container",
-  "other_person_id" : "other_person_id",
-  "reason" : "reason",
-  "role" : "role",
-  "updated_at" : "2000-01-23T04:56:07.000+00:00",
-  "data" : {
-    "key" : "data"
-  },
-  "is_parent" : true
-} ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter container: (query)  (optional)
-     - parameter role: (query)  (optional)
-     - parameter excludeAnonymous: (query)  (optional)
-     - parameter includeDuplicateIdentities: (query)  (optional)
-     - parameter includeSelfReferrals: (query)  (optional)
-     - parameter offset: (query)  (optional)
-     - parameter limit: (query)  (optional)
-
-     - returns: RequestBuilder<[PersonRelationshipResponse]> 
-     */
-    open class func getRelationshipsWithRequestBuilder(personId: String, container: String? = nil, role: Role_getRelationships? = nil, excludeAnonymous: Bool? = nil, includeDuplicateIdentities: Bool? = nil, includeSelfReferrals: Bool? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonRelationshipResponse]> {
-        var path = "/v4/persons/{person_id}/relationships"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        var url = URLComponents(string: URLString)
-        url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "container": container, 
-                        "role": role?.rawValue, 
-                        "exclude_anonymous": excludeAnonymous, 
-                        "include_duplicate_identities": includeDuplicateIdentities, 
-                        "include_self_referrals": includeSelfReferrals, 
-                        "offset": offset?.encodeToJSON(), 
-                        "limit": limit?.encodeToJSON()
-        ])
-
-
-        let requestBuilder: RequestBuilder<[PersonRelationshipResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
-    /**
-     Get a list with request contexts
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getRequestContexts(personId: String, completion: @escaping ((_ data: [RequestContextResponse]?,_ error: Error?) -> Void)) {
-        getRequestContextsWithRequestBuilder(personId: personId).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Get a list with request contexts
-     - GET /v4/persons/{person_id}/request-contexts
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example=[ {
-  "country" : {
-    "name" : "name",
-    "iso_code" : "iso_code"
-  },
-  "device_id" : "device_id",
-  "city" : {
-    "name" : "name"
-  },
-  "ip" : "ip",
-  "created_at" : "2000-01-23T04:56:07.000+00:00",
-  "location" : {
-    "latitude" : 0.8008281904610115,
-    "longitude" : 6.027456183070403
-  },
-  "state" : {
-    "name" : "name",
-    "iso_code" : "iso_code"
-  }
-}, {
-  "country" : {
-    "name" : "name",
-    "iso_code" : "iso_code"
-  },
-  "device_id" : "device_id",
-  "city" : {
-    "name" : "name"
-  },
-  "ip" : "ip",
-  "created_at" : "2000-01-23T04:56:07.000+00:00",
-  "location" : {
-    "latitude" : 0.8008281904610115,
-    "longitude" : 6.027456183070403
-  },
-  "state" : {
-    "name" : "name",
-    "iso_code" : "iso_code"
-  }
-} ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-
-     - returns: RequestBuilder<[RequestContextResponse]> 
-     */
-    open class func getRequestContextsWithRequestBuilder(personId: String) -> RequestBuilder<[RequestContextResponse]> {
-        var path = "/v4/persons/{person_id}/request-contexts"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        let url = URLComponents(string: URLString)
-
-
-        let requestBuilder: RequestBuilder<[RequestContextResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
-    /**
-     Get a list with rewards
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter programLabel: (query) Optional program label filter. (optional)
-     - parameter campaignId: (query) Optional campaign id filter. (optional)
-     - parameter rewardState: (query) Optional reward states list filter separated by comma, one of earned, fulfilled, sent, redeemed, failed, canceled, revoked. (optional)
-     - parameter rewardType: (query) Optional reward types list filter separated by comma, one of manual_coupon, salesforce_coupon, tango_v2, custom_reward, paypal_payouts. (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getRewards(personId: String, programLabel: String? = nil, campaignId: String? = nil, rewardState: String? = nil, rewardType: String? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonRewardResponse]?,_ error: Error?) -> Void)) {
-        getRewardsWithRequestBuilder(personId: personId, programLabel: programLabel, campaignId: campaignId, rewardState: rewardState, rewardType: rewardType, offset: offset, limit: limit).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Get a list with rewards
-     - GET /v4/persons/{person_id}/rewards
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example=[ {
-  "reward_supplier_id" : "reward_supplier_id",
-  "amount" : "amount",
-  "partner_reward_id" : "partner_reward_id",
-  "data" : {
-    "key" : "data"
-  },
-  "expiry_date" : "2000-01-23T04:56:07.000+00:00",
-  "sandbox" : "sandbox",
-  "face_value_type" : "face_value_type",
-  "program_label" : "program_label",
-  "face_value" : "face_value",
-  "tags" : [ "tags", "tags" ],
-  "date_earned" : "2000-01-23T04:56:07.000+00:00",
-  "slots" : [ "slots", "slots" ],
-  "partner_reward_supplier_id" : "partner_reward_supplier_id",
-  "date_issued" : "2000-01-23T04:56:07.000+00:00",
-  "reward_name" : "reward_name",
-  "reward_id" : "reward_id",
-  "id" : "id",
-  "state" : "state",
-  "campaign_id" : "campaign_id",
-  "value_of_rewarded_event" : 0.8008281904610115
-}, {
-  "reward_supplier_id" : "reward_supplier_id",
-  "amount" : "amount",
-  "partner_reward_id" : "partner_reward_id",
-  "data" : {
-    "key" : "data"
-  },
-  "expiry_date" : "2000-01-23T04:56:07.000+00:00",
-  "sandbox" : "sandbox",
-  "face_value_type" : "face_value_type",
-  "program_label" : "program_label",
-  "face_value" : "face_value",
-  "tags" : [ "tags", "tags" ],
-  "date_earned" : "2000-01-23T04:56:07.000+00:00",
-  "slots" : [ "slots", "slots" ],
-  "partner_reward_supplier_id" : "partner_reward_supplier_id",
-  "date_issued" : "2000-01-23T04:56:07.000+00:00",
-  "reward_name" : "reward_name",
-  "reward_id" : "reward_id",
-  "id" : "id",
-  "state" : "state",
-  "campaign_id" : "campaign_id",
-  "value_of_rewarded_event" : 0.8008281904610115
-} ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter programLabel: (query) Optional program label filter. (optional)
-     - parameter campaignId: (query) Optional campaign id filter. (optional)
-     - parameter rewardState: (query) Optional reward states list filter separated by comma, one of earned, fulfilled, sent, redeemed, failed, canceled, revoked. (optional)
-     - parameter rewardType: (query) Optional reward types list filter separated by comma, one of manual_coupon, salesforce_coupon, tango_v2, custom_reward, paypal_payouts. (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
-
-     - returns: RequestBuilder<[PersonRewardResponse]> 
-     */
-    open class func getRewardsWithRequestBuilder(personId: String, programLabel: String? = nil, campaignId: String? = nil, rewardState: String? = nil, rewardType: String? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonRewardResponse]> {
-        var path = "/v4/persons/{person_id}/rewards"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        var url = URLComponents(string: URLString)
-        url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "program_label": programLabel, 
-                        "campaign_id": campaignId, 
-                        "reward_state": rewardState, 
-                        "reward_type": rewardType, 
-                        "offset": offset?.encodeToJSON(), 
-                        "limit": limit?.encodeToJSON()
-        ])
-
-
-        let requestBuilder: RequestBuilder<[PersonRewardResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
-    /**
-     Get a shareable
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter code: (path) Shareable code 
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getShareableByCode(personId: String, code: String, completion: @escaping ((_ data: PersonShareableResponse?,_ error: Error?) -> Void)) {
-        getShareableByCodeWithRequestBuilder(personId: personId, code: code).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Get a shareable
-     - GET /v4/persons/{person_id}/shareables/{code}
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example={
-  "code" : "code",
-  "data" : {
-    "key" : "data"
-  },
-  "link" : "link",
-  "label" : "label",
-  "key" : "key",
-  "content" : {
-    "partner_content_id" : "partner_content_id",
-    "image_url" : "image_url",
-    "description" : "description",
-    "title" : "title",
-    "url" : "url"
-  },
-  "person_id" : "person_id"
-}}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter code: (path) Shareable code 
-
-     - returns: RequestBuilder<PersonShareableResponse> 
-     */
-    open class func getShareableByCodeWithRequestBuilder(personId: String, code: String) -> RequestBuilder<PersonShareableResponse> {
-        var path = "/v4/persons/{person_id}/shareables/{code}"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let codePreEscape = "\(code)"
-        let codePostEscape = codePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{code}", with: codePostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        let url = URLComponents(string: URLString)
-
-
-        let requestBuilder: RequestBuilder<PersonShareableResponse>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
-    /**
-     Get a list with shareables
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getShareables(personId: String, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonShareableResponse]?,_ error: Error?) -> Void)) {
-        getShareablesWithRequestBuilder(personId: personId, offset: offset, limit: limit).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Get a list with shareables
-     - GET /v4/persons/{person_id}/shareables
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example=[ {
-  "code" : "code",
-  "data" : {
-    "key" : "data"
-  },
-  "link" : "link",
-  "label" : "label",
-  "key" : "key",
-  "content" : {
-    "partner_content_id" : "partner_content_id",
-    "image_url" : "image_url",
-    "description" : "description",
-    "title" : "title",
-    "url" : "url"
-  },
-  "person_id" : "person_id"
-}, {
-  "code" : "code",
-  "data" : {
-    "key" : "data"
-  },
-  "link" : "link",
-  "label" : "label",
-  "key" : "key",
-  "content" : {
-    "partner_content_id" : "partner_content_id",
-    "image_url" : "image_url",
-    "description" : "description",
-    "title" : "title",
-    "url" : "url"
-  },
-  "person_id" : "person_id"
-} ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
-
-     - returns: RequestBuilder<[PersonShareableResponse]> 
-     */
-    open class func getShareablesWithRequestBuilder(personId: String, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonShareableResponse]> {
-        var path = "/v4/persons/{person_id}/shareables"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        var url = URLComponents(string: URLString)
-        url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "offset": offset?.encodeToJSON(), 
-                        "limit": limit?.encodeToJSON()
-        ])
-
-
-        let requestBuilder: RequestBuilder<[PersonShareableResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
-    /**
-     Get a list with shares
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter campaignId: (query) Optional campaign id filter. (optional)
-     - parameter partnerShareId: (query) Optional partner share id filter. (optional)
-     - parameter partnerId: (query) Optional partner id filter, using this format: &lt;name&gt;:&lt;value&gt; (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getShares(personId: String, campaignId: String? = nil, partnerShareId: String? = nil, partnerId: String? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonShareResponse]?,_ error: Error?) -> Void)) {
-        getSharesWithRequestBuilder(personId: personId, campaignId: campaignId, partnerShareId: partnerShareId, partnerId: partnerId, offset: offset, limit: limit).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Get a list with shares
-     - GET /v4/persons/{person_id}/shares
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example=[ {
-  "share_id" : "share_id",
-  "shareable_id" : "shareable_id",
-  "partner_id" : {
-    "name" : "name",
-    "value" : "value"
-  },
-  "data" : {
-    "key" : "data"
-  },
-  "friend_person_id" : "friend_person_id",
-  "channel" : "channel",
-  "share_date" : "2000-01-23T04:56:07.000+00:00",
-  "recipient" : "recipient",
-  "link" : "link",
-  "message" : "message"
-}, {
-  "share_id" : "share_id",
-  "shareable_id" : "shareable_id",
-  "partner_id" : {
-    "name" : "name",
-    "value" : "value"
-  },
-  "data" : {
-    "key" : "data"
-  },
-  "friend_person_id" : "friend_person_id",
-  "channel" : "channel",
-  "share_date" : "2000-01-23T04:56:07.000+00:00",
-  "recipient" : "recipient",
-  "link" : "link",
-  "message" : "message"
-} ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter campaignId: (query) Optional campaign id filter. (optional)
-     - parameter partnerShareId: (query) Optional partner share id filter. (optional)
-     - parameter partnerId: (query) Optional partner id filter, using this format: &lt;name&gt;:&lt;value&gt; (optional)
-     - parameter offset: (query) Optional offset filter, defaults to 0. (optional)
-     - parameter limit: (query) Optional limit filter, defaults to 100. (optional)
-
-     - returns: RequestBuilder<[PersonShareResponse]> 
-     */
-    open class func getSharesWithRequestBuilder(personId: String, campaignId: String? = nil, partnerShareId: String? = nil, partnerId: String? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonShareResponse]> {
-        var path = "/v4/persons/{person_id}/shares"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        var url = URLComponents(string: URLString)
-        url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "campaign_id": campaignId, 
-                        "partner_share_id": partnerShareId, 
-                        "partner_id": partnerId, 
-                        "offset": offset?.encodeToJSON(), 
-                        "limit": limit?.encodeToJSON()
-        ])
-
-
-        let requestBuilder: RequestBuilder<[PersonShareResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
     /**
      Gets calculated statistics for a Person
 
@@ -948,7 +1030,7 @@ open class PersonEndpoints {
 
     /**
      Gets calculated statistics for a Person
-     - GET /v4/persons/{person_id}/stats
+     - GET /v5/persons/{person_id}/stats
      - 
 
      - API Key:
@@ -973,7 +1055,7 @@ open class PersonEndpoints {
      - returns: RequestBuilder<PersonStatsResponse> 
      */
     open class func getStatsWithRequestBuilder(personId: String, container: String? = nil) -> RequestBuilder<PersonStatsResponse> {
-        var path = "/v4/persons/{person_id}/stats"
+        var path = "/v5/persons/{person_id}/stats"
         let personIdPreEscape = "\(personId)"
         let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
@@ -986,126 +1068,6 @@ open class PersonEndpoints {
 
 
         let requestBuilder: RequestBuilder<PersonStatsResponse>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
-
-        return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
-    }
-    /**
-     Get a list with steps
-
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter name: (query)  (optional)
-     - parameter container: (query)  (optional)
-     - parameter campaignId: (query)  (optional)
-     - parameter programLabel: (query)  (optional)
-     - parameter partnerId: (query)  (optional)
-     - parameter flowPath: (query)  (optional)
-     - parameter visitType: (query)  (optional)
-     - parameter offset: (query)  (optional)
-     - parameter limit: (query)  (optional)
-     - parameter completion: completion handler to receive the data and the error objects
-     */
-    open class func getSteps(personId: String, name: String? = nil, container: String? = nil, campaignId: String? = nil, programLabel: String? = nil, partnerId: String? = nil, flowPath: String? = nil, visitType: String? = nil, offset: Int? = nil, limit: Int? = nil, completion: @escaping ((_ data: [PersonStepResponse]?,_ error: Error?) -> Void)) {
-        getStepsWithRequestBuilder(personId: personId, name: name, container: container, campaignId: campaignId, programLabel: programLabel, partnerId: partnerId, flowPath: flowPath, visitType: visitType, offset: offset, limit: limit).execute { (response, error) -> Void in
-            completion(response?.body, error)
-        }
-    }
-
-
-    /**
-     Get a list with steps
-     - GET /v4/persons/{person_id}/steps
-
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: COOKIE
-     - API Key:
-       - type: apiKey authorization 
-       - name: HEADER
-     - API Key:
-       - type: apiKey access_token (QUERY)
-       - name: QUERY
-     - examples: [{contentType=application/json, example=[ {
-  "container" : "container",
-  "event_id" : "event_id",
-  "partner_event_id" : {
-    "name" : "name",
-    "value" : "value"
-  },
-  "data" : [ {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  }, {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  } ],
-  "step_name" : "step_name",
-  "event_date" : "2000-01-23T04:56:07.000+00:00",
-  "program_label" : "program_label",
-  "id" : "id",
-  "value" : "value",
-  "campaign_id" : "campaign_id",
-  "quality" : "HIGH"
-}, {
-  "container" : "container",
-  "event_id" : "event_id",
-  "partner_event_id" : {
-    "name" : "name",
-    "value" : "value"
-  },
-  "data" : [ {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  }, {
-    "scope" : "PUBLIC",
-    "name" : "name",
-    "value" : { }
-  } ],
-  "step_name" : "step_name",
-  "event_date" : "2000-01-23T04:56:07.000+00:00",
-  "program_label" : "program_label",
-  "id" : "id",
-  "value" : "value",
-  "campaign_id" : "campaign_id",
-  "quality" : "HIGH"
-} ]}]
-     - parameter personId: (path) The Extole unique profile identifier of this user at Extole. 
-     - parameter name: (query)  (optional)
-     - parameter container: (query)  (optional)
-     - parameter campaignId: (query)  (optional)
-     - parameter programLabel: (query)  (optional)
-     - parameter partnerId: (query)  (optional)
-     - parameter flowPath: (query)  (optional)
-     - parameter visitType: (query)  (optional)
-     - parameter offset: (query)  (optional)
-     - parameter limit: (query)  (optional)
-
-     - returns: RequestBuilder<[PersonStepResponse]> 
-     */
-    open class func getStepsWithRequestBuilder(personId: String, name: String? = nil, container: String? = nil, campaignId: String? = nil, programLabel: String? = nil, partnerId: String? = nil, flowPath: String? = nil, visitType: String? = nil, offset: Int? = nil, limit: Int? = nil) -> RequestBuilder<[PersonStepResponse]> {
-        var path = "/v4/persons/{person_id}/steps"
-        let personIdPreEscape = "\(personId)"
-        let personIdPostEscape = personIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        path = path.replacingOccurrences(of: "{person_id}", with: personIdPostEscape, options: .literal, range: nil)
-        let URLString = ExtoleClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
-        var url = URLComponents(string: URLString)
-        url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "name": name, 
-                        "container": container, 
-                        "campaign_id": campaignId, 
-                        "program_label": programLabel, 
-                        "partner_id": partnerId, 
-                        "flow_path": flowPath, 
-                        "visit_type": visitType, 
-                        "offset": offset?.encodeToJSON(), 
-                        "limit": limit?.encodeToJSON()
-        ])
-
-
-        let requestBuilder: RequestBuilder<[PersonStepResponse]>.Type = ExtoleClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "GET", URLString: (url?.string ?? URLString), parameters: parameters, isBody: false)
     }
